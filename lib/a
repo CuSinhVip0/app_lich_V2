@@ -1,0 +1,55 @@
+Expanded(child: Input(title: "Ngày thực hiện", hint: DateFormat.yMMMMEEEEd('vi').format(_taskListController.selectedDate),
+													icon: IconButton(
+														icon: Icon(Icons.calendar_month_outlined,color: Colors.grey,),
+														onPressed: () async {
+															DateTime? _datepick = await  showDatePicker(
+																context: context,
+																initialDate: DateTime.now(),
+																firstDate: DateTime(DateTime.now().year-50),
+																lastDate: DateTime(DateTime.now().year+50)
+															);
+															if(_datepick!=null){
+																_taskListController.selectedDate = _datepick;
+															}
+														}
+													),
+												),)
+
+
+												// child:TextFormField(
+                                                				// 	readOnly:true,
+                                                				// 	autofocus: false,
+                                                				// 	controller: textEditingController,
+                                                				// 	cursorColor: Colors.grey[400],
+                                                				// 	style: subTitleStyle,
+                                                				// 	decoration: InputDecoration(
+                                                				// 		hintText: ,
+                                                				// 		hintStyle: subTitleStyle,
+                                                				// 		focusedBorder: UnderlineInputBorder(
+                                                				// 			borderSide: BorderSide(
+                                                				// 				color:Colors.white,
+                                                				// 				width: 0
+                                                				// 			)
+                                                				// 		),
+                                                				// 		enabledBorder: UnderlineInputBorder(
+                                                				// 			borderSide: BorderSide(
+                                                				// 				color:Colors.white,
+                                                				// 				width: 0
+                                                				// 			)
+                                                				// 		),
+                                                				// 		disabledBorder: UnderlineInputBorder(
+                                                				// 			borderSide: BorderSide(
+                                                				// 				color:Colors.white,
+                                                				// 				width: 0
+                                                				// 			)
+                                                				// 		),
+                                                				// 	),
+                                                				// ),
+
+
+
+ -- thêm nút về ngày hôm nay
+ -- chỉnh lại màu cho từng loại sự kiện
+ -- thêm bookmark cho ngày được thêm sự kiện
+ -- thu gọn subtitle các item sự kiện của ngày
+ -- luu setting xuong sql lite

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "106478384540",
+    "project_id": "luanvan-526d0",
+    "storage_bucket": "luanvan-526d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106478384540:android:809b89be2c7e36238ac459",
+        "android_client_info": {
+          "package_name": "com.example.luanvan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106478384540-2m4itjt43v82eib781j5n1ebsojcdd4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.luanvan",
+            "certificate_hash": "7429ad65a48bf6e5609ff9ca26a29d8c3e016d07"
+          }
+        },
+        {
+          "client_id": "106478384540-o5nne6us8b2q5cqhbm2p819cv27in7p0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCORiQIEQ-3rEGOabIz9mWnkeE1qpuBnnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106478384540-o5nne6us8b2q5cqhbm2p819cv27in7p0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "106478384540-p8di10l8cb1vbksr4hf3alk8ou2113ji.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.luanvan"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
