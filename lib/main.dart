@@ -29,7 +29,6 @@ import 'Provider/Internet.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
 	tz.initializeTimeZones();
@@ -71,13 +70,7 @@ class MyApp extends StatelessWidget {
 							Get.lazyPut<NavigatorController>(() => NavigatorController());
 						}),
 					),
-					GetPage(
-						name: '/detailPost',
-						page: () => DetailPostPage(),
-						binding: BindingsBuilder(() {
-							Get.lazyPut<DetailPostController>(() => DetailPostController());
-						}),
-					),
+
 
 
 					// //You can define a different page for routes with arguments, and another without arguments, but for that you must use the slash '/' on the route that will not receive arguments as above.

@@ -47,7 +47,7 @@ class PostController extends GetxController{
 
 	Future<dynamic> updatePosttoDataBase (String title, List<String> urlImage,String Id_User,String Platform ) async {
 		try {
-			final res = await http.post(Uri.parse(ServiceApi.api + '/user/updatePosttoDataBase'),
+			final res = await http.post(Uri.parse(ServiceApi.api + '/post/updatePosttoDataBase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Title": title,
@@ -67,20 +67,28 @@ class PostController extends GetxController{
 	}
 
 	Future<bool> uploadPost(String title,String Id_User,String Platform) async{
-		List<String> urlImgs = [];
-		if(imgFile.length>0){
-			urlImgs = await UploadImageToFirebase();
-			if(urlImgs.length==0){
-				print("Lỗi xảy ra");
+		try{
+			List<String> urlImgs = [];
+			if(imgFile.length>0){
+				urlImgs = await UploadImageToFirebase();
+				if(urlImgs.length==0){
+					print("Lỗi xảy ra");
+					return false;
+				}
+			}
+			dynamic res = await updatePosttoDataBase(title,urlImgs,Id_User,Platform);
+			if(res['status']=="error"){
 				return false;
 			}
+			NotificationServices().showNotification(res['newId'], res['title']);
+			return true;
 		}
-		dynamic res = await updatePosttoDataBase(title,urlImgs,Id_User,Platform);
-		if(res['status']=="error"){
+		catch(e){
+			print("-- Lỗi xảy ra ở UserController uploadPost - catch --");
+			print(e);
+			print("-- End Lỗi xảy ra ở UserController uploadPost - catch --");
 			return false;
 		}
-		NotificationServices().showNotification(res['newId'], res['title']);
-		return true;
 	}
 
 }

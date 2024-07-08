@@ -1,26 +1,37 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart ' as http;
+import 'package:luanvan/Controller/UserController.dart';
 
 import '../Enum/Data.dart';
 
 class StatusController extends GetxController{
+	UserController userController = Get.find();
 	var listPost = [].obs;
-
-
+	var  scrollController = ScrollController();
+	var i = 0.obs;
+	var finished = false.obs;
 	void getPostFromDataBase(int index, int limit) async {
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/user/getPostFromDataBase'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/post/getPostFromDataBase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"index":index,
-					"limit":limit
+					"limit":limit,
+					"Id_User":userController.userData['id']
 				}));
 			dynamic result = jsonDecode(res.body);
-			listPost.assignAll(result['result']);
-			update();
-			listPost.refresh();
+			if(result['result'].length>0){
+				listPost.addAll(result['result']);
+				update();
+				listPost.refresh();
+				i = i + 1;
+			}
+			else{
+				finished.value = true;
+			}
 		}
 		catch(e){
 			print("-- Lỗi xảy ra ở UserController getPostFromDataBase - catch --");
@@ -29,10 +40,32 @@ class StatusController extends GetxController{
 		}
 	}
 
+	Future<void> updateLikeOfPosttoDataBase (int id,String id_user) async {
+		try {
+			final res = await http.post(Uri.parse(ServiceApi.api + '/post/updateLikeOfPosttoDataBase'),
+				headers: {"Content-Type": "application/json"},
+				body: jsonEncode({
+					"Id_Post":id,
+					"Id_User":id_user
+				}));
+			dynamic result = jsonDecode(res.body);
+			return result;
+		}
+		catch (e) {
+			print("-- Lỗi xảy ra ở UserController updateLikeOfPosttoDataBase - catch --");
+			print(e);
+			print("-- End Lỗi xảy ra ở UserController updateLikeOfPosttoDataBase - catch --");
+		}
+	}
+	
 	@override
   	void onReady() {
-		getPostFromDataBase(0,2);
+		getPostFromDataBase(0,5);
+		scrollController.addListener(() {
+			if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+				if(finished == false) getPostFromDataBase(i.value,5);
+			}
+		});
 		super.onReady();
   	}
-
 }

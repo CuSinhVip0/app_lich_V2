@@ -37,14 +37,13 @@ class CreatePostPage extends StatelessWidget{
 							margin: EdgeInsets.only(right: 12),
 							child:	Obx(()=> SmallButton(onTap:postController.loading.value ? (){} : () async{
 								NotificationServices().showNotification(1, "a");
-									// postController.loading.value =true;
-									// bool res = await postController.uploadPost(textEditingController.text,userController.userData['id'],userController.typeLogin.value);
-									// if(res == true){
-									// 	Get.back();
-									//
-									// }
-									// else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
-									// postController.loading.value =false;
+									postController.loading.value =true;
+									bool res = await postController.uploadPost(textEditingController.text,userController.userData['id'],userController.typeLogin.value);
+									if(res == true){
+										Get.back();
+									}
+									else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
+									postController.loading.value = false;
 								}, widget: Container(
 									padding: EdgeInsets.symmetric(vertical: 6,horizontal: 12),
 									child: Text("Đăng",style: buttonLableStyle,),

@@ -35,6 +35,9 @@ class Messages extends Translations {
 			"Createevent":"Create event",
 			"lan":"en",
 			"startadiscussion":"Start a discussion",
+			"detailpost":"Detail post",
+			"reply":"Reply",
+			"like":"Like",
 		},
 		'vi_VN': {
 			'community': 'Cộng đồng',
@@ -67,7 +70,10 @@ class Messages extends Translations {
 			"noworktoday":"Hôm nay không có công việc nào",
 			"Createevent":"Tạo sự kiện",
 			"lan":"vi",
-			"startadiscussion":"Bạn đang gặp vấn đề ??"
+			"startadiscussion":"Bạn đang gặp vấn đề ??",
+			"detailpost":"Chi tiết bài viết",
+			"reply":"Phản hồi",
+			"like":"Thích",
 		}
 	};
 }
