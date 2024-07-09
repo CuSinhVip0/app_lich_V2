@@ -52,6 +52,17 @@ TextStyle get subTitleStyle{
 	);
 }
 
+TextStyle get subLikeTitleStyle{
+	return
+		TextStyle(
+			fontFamily: 'Mulish',
+			fontSize: 14,
+			fontWeight: FontWeight.w700,
+			color: RootColor.cam_nhat
+		);
+}
+
+
 TextStyle get buttonLableStyle{
 	return
 		TextStyle(

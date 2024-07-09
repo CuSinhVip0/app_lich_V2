@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:luanvan/Controller/DetailPostController.dart';
+import 'package:luanvan/Controller/StatusController.dart';
 import 'package:luanvan/Controller/UserController.dart';
 
 import '../Styles/Colors.dart';
@@ -13,10 +14,10 @@ import '../utils/formatTimeToString.dart';
 
 class DetailPostPage extends StatelessWidget{
 	DetailPostController detailPostController = Get.put(DetailPostController());
+	StatusController statusController = Get.find();
 	UserController userController = Get.find();
 	var payload;
 	DetailPostPage(this.payload);
-
 	@override
  	 Widget build(BuildContext context) {
 		detailPostController.payload.value = payload;
@@ -115,13 +116,22 @@ class DetailPostPage extends StatelessWidget{
 																		flex: 1,
 																		child:Row(
 																			children: [
-																				Icon(FontAwesomeIcons.heart,color: RootColor.cam_nhat,size: 24,),
+																				GetBuilder(
+																					init: DetailPostController(),
+																					builder: (detailPostController) => GestureDetector(
+																						onTap:(){
+																							statusController.updatelistPort('like',payload['Id']);
+																							statusController.updateLikeOfPosttoDataBase(payload['Id'],userController.userData['id']);
+																							detailPostController.updatelistPort();
+																						},
+																						child: Icon(detailPostController.payload['IsLike']==0?FontAwesomeIcons.heart:FontAwesomeIcons.solidHeart,color: RootColor.cam_nhat,size: 24,),
+																					),),
 																				SizedBox(width: 4,),
-																				Text(detailPostController.payload['NumLike'].toString(),style: subTitleStyle,),
+																				Obx(() => Text(detailPostController.payload['NumLike'].toString(),style: subTitleStyle,),),
 																				SizedBox(width: 12,),
 																				Icon(FontAwesomeIcons.commentDots,color: RootColor.cam_nhat,size: 24,),
 																				SizedBox(width: 4,),
-																				Text("17",style: subTitleStyle,),
+																				Obx(() => Text(detailPostController.detailComment.length.toString(),style: subTitleStyle,),)
 																			],
 																		)
 																	),
@@ -166,17 +176,44 @@ class DetailPostPage extends StatelessWidget{
 															title: Text(i['Content']  ?? "",style: titleStyle,),
 															subtitle: Row(
 																children: [
-																	Expanded(child: Text(FormatTimeToString(DateTime.now().difference(DateFormat("yyyy-MM-dd hh:mm:ss").parse(i['CreateAt']))),style: subTitleStyle,)),
 																	Expanded(
-																		child: GestureDetector(
-																			child: Text("like".tr),
-																		)
-																	),
+																		flex: 7,
+																		child: Row(
+																		children: [
+																			Expanded(
+																				child: Text(FormatTimeToString(DateTime.now().difference(DateFormat("yyyy-MM-dd hh:mm:ss").parse(i['CreateAt']))),style: subTitleStyle,)),
+																			Expanded(child: Row(
+																				children: [
+																					Expanded(
+																						flex: 4,
+																						child: GestureDetector(
+																							onTap: (){
+																								detailPostController.updatelikeComments(i['Id']);
+																								detailPostController.updateLikeOfCommenttoDataBase(i['Id'],userController.userData['id']);
+																							},
+																							child: Text("like".tr,style:i['IsLike']==0 ? subTitleStyle : subLikeTitleStyle,),
+																						)
+																					),
+																					Expanded(
+																						flex:6,
+																						child: GestureDetector(
+																							child: Text("reply".tr,style: subTitleStyle,),
+																						)
+																					),
+																				],
+																			))
+																		],
+																	)),
 																	Expanded(
-																		child: GestureDetector(
-																			child: Text("reply".tr),
-																		)
-																	),
+																		flex: 1,
+																		child: i['NumLike'] >0 ? Row(
+																			children: [
+																				Expanded(child: Icon(FontAwesomeIcons.solidHeart,color: RootColor.cam_nhat,size: 18,),),
+																				SizedBox(width: 4,),
+																				Expanded(child:Text(i['NumLike'].toString(),style: subTitleStyle,),)
+																			],
+																		) :SizedBox()
+																	)
 																],
 															),
 														)
@@ -265,7 +302,6 @@ class DetailPostPage extends StatelessWidget{
 															detailPostController.sending.value = false;
 															FocusScope.of(context).unfocus();
 															detailPostController.textEditingController.text='';
-
 														},
 														child:  FaIcon(Icons.send,color: detailPostController.sending.value ? RootColor.disable:RootColor.cam_nhat,),
 													):SizedBox()) ,

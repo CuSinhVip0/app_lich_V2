@@ -13,6 +13,33 @@ class StatusController extends GetxController{
 	var  scrollController = ScrollController();
 	var i = 0.obs;
 	var finished = false.obs;
+
+	void updatelistPort(String key, var id){
+		var post = listPost.firstWhereOrNull((element) => element['Id'] == id);
+		post = {
+			...post,
+			'NumLike':post['IsLike']==0?post['NumLike']+1:post['NumLike']-1,
+			'IsLike': post['IsLike']==0?1:0
+		};
+		int index  = listPost.indexWhere((element) => element['Id'] == id);
+		listPost[index] = post;
+		update();
+		listPost.refresh();
+	}
+
+	void updateTotalCommentPost(var id, {int key = 1}){ // key = 1 cộng , key = 2 xóa
+		var post = listPost.firstWhereOrNull((element) => element['Id'] == id);
+		post = {
+			...post,
+			'NumComment':key == 1 ? post['NumComment'] + 1 :  post['NumComment'] - 1,
+			'IsLike': post['IsLike']==0?1:0
+		};
+		int index  = listPost.indexWhere((element) => element['Id'] == id);
+		listPost[index] = post;
+		update();
+		listPost.refresh();
+	}
+
 	void getPostFromDataBase(int index, int limit) async {
 		try{
 			final res = await http.post(Uri.parse(ServiceApi.api+'/post/getPostFromDataBase'),

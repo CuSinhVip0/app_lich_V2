@@ -53,3 +53,7 @@ Expanded(child: Input(title: "Ngày thực hiện", hint: DateFormat.yMMMMEEEEd(
  -- thêm bookmark cho ngày được thêm sự kiện
  -- thu gọn subtitle các item sự kiện của ngày
  -- luu setting xuong sql lite
+
+ -- binh luan
+    -- nhan nut binh luan cua moi bai post thi chuyen sang trang chi tiet va focus vao input
+

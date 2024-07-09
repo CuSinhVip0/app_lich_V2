@@ -24,7 +24,6 @@ class StatusPage extends StatelessWidget{
 	@override
 	Widget build(BuildContext context) {
 		context.isDarkMode;
-		print(statusController.listPost.toString());
 		return Scaffold(
 			appBar: AppBar(
 				centerTitle: true,
@@ -65,6 +64,7 @@ class StatusPage extends StatelessWidget{
 									builder: (statusController)=>Column(
 										children: statusController.listPost.map((i)=>
 											PostV1(i,(){
+												statusController.updatelistPort('like',i['Id']);
 												statusController.updateLikeOfPosttoDataBase(i['Id'],userController.userData['id']);
 											})
 										).toList(),
