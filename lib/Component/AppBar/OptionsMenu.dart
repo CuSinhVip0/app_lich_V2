@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:luanvan/Common/Button/CustomButton.dart';
 import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/pages/InformationDetailPage.dart';
 import 'package:luanvan/pages/Setting.dart';
 
 import '../../Styles/Colors.dart';
@@ -55,7 +56,8 @@ class OptionsMenu extends StatelessWidget{
 														radius: 100.0,
 													),
 												),
-												Text(userController.userData['name'],style: CustomStyle(18, Colors.black, FontWeight.w800),)
+												SizedBox(height:4),
+												Text(userController.userData['name'],style: CustomStyle(18, Colors.black, FontWeight.w700),)
 											],
 										)
 										: Column(
@@ -82,7 +84,7 @@ class OptionsMenu extends StatelessWidget{
 										leading: Icon(Icons.edit_note_outlined,color: Get.isDarkMode ? Colors.white: Colors.black,),
 										title: Text('userInfor'.tr,style: CustomStyle(16,Colors.black,FontWeight.w400)),
 										onTap: () {
-											print(userController.userData.toString());
+											Get.to(()=>InformationDetailPage());
 										},
 									): SizedBox(),
 									userController.isLogin.value == true ?  Divider(

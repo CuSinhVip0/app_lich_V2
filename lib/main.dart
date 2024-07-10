@@ -1,23 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:luanvan/Controller/DetailPostController.dart';
-import 'package:luanvan/Controller/HomeController.dart';
-import 'package:luanvan/Controller/LoginController.dart';
 import 'package:luanvan/Services/Notification.dart';
 import 'package:luanvan/Styles/Themes.dart';
-import 'package:luanvan/pages/DetailPostPage.dart';
-import 'package:luanvan/pages/LoginPage.dart';
 import 'package:luanvan/pages/NavigatorPage.dart';
-import 'package:luanvan/pages/ReminderPage.dart';
-import 'package:luanvan/pages/home.dart';
-import 'package:luanvan/utils/LoaderSvg.dart';
-import 'package:luanvan/utils/ThemeChange.dart';
 import 'package:luanvan/utils/Translates.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,11 +20,11 @@ import 'Provider/Internet.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
 	tz.initializeTimeZones();
 	WidgetsFlutterBinding.ensureInitialized();
-	await ImageUtils.svgPrecacheImage();
+	// await ImageUtils.svgPrecacheImage();
 	NotificationServices().init();
 	await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform);
 	final FCMToken = await FirebaseApi().initNoti();
@@ -54,6 +45,15 @@ class MyApp extends StatelessWidget {
 				ChangeNotifierProvider<DateToday>(create: (_)=>DateToday()),
 			],
 			child: GetMaterialApp(
+				localizationsDelegates: [
+					GlobalMaterialLocalizations.delegate,
+					GlobalCupertinoLocalizations.delegate,
+					DefaultWidgetsLocalizations.delegate,
+				],
+				supportedLocales: [
+					const Locale('vi', 'VN'),
+					const Locale('en', 'US'),
+				],
 				translations: Messages(), // your translations
 				locale: Locale('vi', 'VN'), // translations will be displayed in that locale
 				fallbackLocale: Locale('vi', 'VN'),

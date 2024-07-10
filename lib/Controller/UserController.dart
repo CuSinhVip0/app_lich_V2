@@ -152,21 +152,24 @@ class UserController extends GetxController{
 		}
 	}
 
-	Future<dynamic> updateInforToDatabase(String id_platform, String platform ) async{
+	Future<dynamic> insertInforToDatabase(String id_platform, String platform,String name,String urlPic, String email ) async{
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/user/updateInforToDatabase'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/user/insertInforToDatabase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Id_Platform":id_platform,
-					'Platform':platform
+					'Platform':platform,
+					'Name': name,
+					'UrlPic':urlPic,
+					'Email':email,
 				}));
 			dynamic result = jsonDecode(res.body);
 			return result;
 		}
 		catch(e){
-			print("-- Lỗi xảy ra ở UserController updateInforToDatabase - catch --");
+			print("-- Lỗi xảy ra ở UserController insertInforToDatabase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở UserController updateInforToDatabase - catch --");
+			print("-- End Lỗi xảy ra ở UserController insertInforToDatabase - catch --");
 		}
 	}
 

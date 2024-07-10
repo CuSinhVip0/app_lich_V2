@@ -97,7 +97,7 @@ TextStyle AppBarTitleStyle (Color color){
 	return TextStyle(
 		fontFamily: 'Mulish',
 		fontSize: 20,
-		fontWeight: FontWeight.w600,
+		fontWeight: FontWeight.w800,
 		color: Get.isDarkMode? Colors.white: color,
 	);
 }

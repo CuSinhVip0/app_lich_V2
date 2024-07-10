@@ -68,8 +68,7 @@ class LoginPage extends StatelessWidget {
 									onTap: () async{
 										bool res = await userController.loginFaceBook();
 										if(res) {
-											await userController.updateInforToDatabase(userController.userData['id'], 'FB');
-
+											await userController.insertInforToDatabase(userController.userData['id'], 'FB',userController.userData['name'],userController.userData['picture']['data']['url'],userController.userData['email']);
 											Get.back();
 										}
 										else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
@@ -95,7 +94,7 @@ class LoginPage extends StatelessWidget {
 									onTap: () async{
 										var res = await userController.signInWithGoogle();
 										if(res) {
-											await userController.updateInforToDatabase(userController.userData['id'], 'GG');
+											await userController.insertInforToDatabase(userController.userData['id'], 'GG',userController.userData['name'],userController.userData['picture']['data']['url'],userController.userData['email']);
 											Get.back();
 										}
 										else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
