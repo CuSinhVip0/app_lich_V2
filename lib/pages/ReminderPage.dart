@@ -31,10 +31,6 @@ class ReminderPage extends StatelessWidget {
 	var taskController = Get.put(TaskController());
 	ReminderPage();
 	@override
-	void initState() {
-		initializeDateFormatting('vi');
-	}
-	@override
 	Widget build(BuildContext context) {
 		context.isDarkMode;
 		return Scaffold(
