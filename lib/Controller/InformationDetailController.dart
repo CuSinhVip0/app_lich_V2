@@ -26,7 +26,6 @@ class InformationDetailController extends GetxController{
 			dynamic result = jsonDecode(res.body);
 			print(result['result']);
 			InforUser.assignAll(result['result']);
-
 			update();
 		}
 		catch(e){

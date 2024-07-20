@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -69,12 +70,11 @@ class DetailPostPage extends StatelessWidget{
 																backgroundColor: Colors.white,
 																radius: 20.0,
 																child: CircleAvatar(
-																	// backgroundImage: NetworkImage(userController.userData['picture']['data']['url'],),
-																	backgroundImage: AssetImage('assets/Ti.jpg'),
+																	backgroundImage:CachedNetworkImageProvider(detailPostController.payload['UrlPic'],),
 																	radius: 100.0,
 																),
 															),
-															title: Text(detailPostController.payload['Id_Platform']  ?? "",style: titleStyle,),
+															title: Text(detailPostController.payload['Name']  ?? "",style: titleStyle,),
 															subtitle: Text(FormatTimeToString(DateTime.now().difference(DateFormat("yyyy-MM-dd hh:mm:ss").parse(detailPostController.payload['CreateAt']))),style: subTitleStyle,),
 														),
 														SizedBox(height: 4,),
@@ -97,8 +97,7 @@ class DetailPostPage extends StatelessWidget{
 																	decoration: BoxDecoration(
 																		borderRadius: BorderRadius.circular(8.0),
 																		image: DecorationImage(
-																			image: NetworkImage(detailPostController.payload['Url']), fit: BoxFit.cover),
-																		// image: AssetImage('assets/Tet-nguyen-dan-2022-1.jpg'), fit: BoxFit.cover,),
+																			image: CachedNetworkImageProvider(detailPostController.payload['Url'],), fit: BoxFit.cover),
 																	),
 																),
 															),
@@ -168,8 +167,7 @@ class DetailPostPage extends StatelessWidget{
 																backgroundColor: Colors.white,
 																radius: 18.0,
 																child: CircleAvatar(
-																	// backgroundImage: NetworkImage(userController.userData['picture']['data']['url'],),
-																	backgroundImage: AssetImage('assets/Ti.jpg'),
+																	backgroundImage: CachedNetworkImageProvider(i['UrlPic'],),
 																	radius: 100.0,
 																),
 															),

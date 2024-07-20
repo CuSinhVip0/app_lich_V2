@@ -176,6 +176,7 @@ class ReminderPage extends StatelessWidget {
 																								padding: const EdgeInsets.all(8.0),
 																								child: GestureDetector(
 																									onTap: (){
+																										print(items);
 																										taskController.setTask(items);
 																										items['Id'] != 1
 																											? Get.to(()=>TaskDetailPage())
@@ -206,7 +207,8 @@ class ReminderPage extends StatelessWidget {
 																													Text(items["Name"], style: subTitleStyle)
 																												],
 																											),
-																											subtitle:Text(items["ChiTiet"] ?? "", style: subTitleStyle),
+																											subtitle:Text(items["ChiTiet"] ?? "", style: subTitleStyle ,overflow: TextOverflow.ellipsis, // Hiển thị dấu ba chấm khi văn bản tràn
+																												maxLines: 2,),
 																										),
 																									),
 																								),

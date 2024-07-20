@@ -25,7 +25,6 @@ class NonScrollableRefreshIndicatorV2 extends StatelessWidget {
 				return RefreshIndicator(
 					onRefresh: onRefresh,
 					child: ScrollConfiguration(
-						// Customize scroll behavior for both platforms
 						behavior: _ClampingScrollBehavior(),
 						child: SingleChildScrollView(
 							controller: scrollController,

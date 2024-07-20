@@ -8,7 +8,7 @@ import 'package:luanvan/Styles/Colors.dart';
 import 'package:luanvan/Styles/Themes.dart';
 import 'package:luanvan/pages/DetailPostPage.dart';
 import 'package:luanvan/utils/formatTimeToString.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class PostV1 extends StatelessWidget{
 	StatusController statusController = Get.find();
 	var payload;
@@ -43,12 +43,11 @@ class PostV1 extends StatelessWidget{
 									backgroundColor: Colors.white,
 									radius: 20.0,
 									child: CircleAvatar(
-										// backgroundImage: NetworkImage(userController.userData['picture']['data']['url'],),
-										backgroundImage: AssetImage('assets/Ti.jpg'),
+										backgroundImage: CachedNetworkImageProvider(payload['UrlPic'],),
 										radius: 100.0,
 									),
 								),
-								title: Text(payload['Id_Platform'] ?? "",style: titleStyle,),
+								title: Text(payload['Name'] ?? "",style: titleStyle,),
 								subtitle: Text(FormatTimeToString(DateTime.now().difference(DateFormat("yyyy-MM-dd hh:mm:ss").parse(payload['CreateAt']))),style: subTitleStyle,),
 							),
 							SizedBox(height: 4,),
@@ -71,7 +70,7 @@ class PostV1 extends StatelessWidget{
 										decoration: BoxDecoration(
 											borderRadius: BorderRadius.circular(8.0),
 											image: DecorationImage(
-												image: NetworkImage(payload['Url']), fit: BoxFit.cover),
+												image: CachedNetworkImageProvider(payload['Url']), fit: BoxFit.cover),
 											// image: AssetImage('assets/Tet-nguyen-dan-2022-1.jpg'), fit: BoxFit.cover,),
 										),
 									),

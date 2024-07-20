@@ -40,8 +40,10 @@ class DetailPostController extends GetxController{
 					"NumLike":0,
 					"IsLike":0,
 					"CreateAt":DateTime.now().toString(),
+					"Name": userController.userData['name']['data']['url'],
+					"UrlPic":userController.userData['picture']
 				});
-				statusController.updateTotalCommentPost(payload['Id']);
+				// statusController.updateTotalCommentPost(payload['Id']);
 				update();
 				detailComment.refresh();
 				return true;
@@ -49,9 +51,9 @@ class DetailPostController extends GetxController{
 			return false;
 		}
 		catch (e) {
-			print("-- Lỗi xảy ra ở UserController updatePosttoDataBase - catch --");
+			print("-- Lỗi xảy ra ở UserController updateCommenttoDataBase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở UserController updatePosttoDataBase - catch --");
+			print("-- End Lỗi xảy ra ở UserController updateCommenttoDataBase - catch --");
 			return false;
 		}
 	}

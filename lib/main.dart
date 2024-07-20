@@ -31,7 +31,6 @@ void main() async {
 	await FirebaseFirestore.instance.collection("fcmtokens").doc(FCMToken).set({"token_device":FCMToken}).then((value) => print("Lưu token thành công"));
 	initializeDateFormatting('vi');
 	Get.put<UserController>(UserController());
-
 	runApp(MyApp());
 }
 class MyApp extends StatelessWidget {

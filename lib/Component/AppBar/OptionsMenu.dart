@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:luanvan/Common/Button/CustomButton.dart';
 import 'package:luanvan/Controller/UserController.dart';
 import 'package:luanvan/pages/InformationDetailPage.dart';
@@ -32,11 +33,8 @@ class OptionsMenu extends StatelessWidget{
 					Stack(children: [
 						Container(
 							height: 200,
-							child: SvgPicture.asset(
-								Get.isDarkMode ? "assets/backgroundlogin_darkmode.svg" : 'assets/backgroundlogin.svg' ,
-								fit: BoxFit.cover,
-								alignment: Alignment.centerLeft,
-							)),
+							child: Image.asset(Get.isDarkMode ? 'assets/backgroundlogin_dark.png' :'assets/backgroundlogin.png',fit: BoxFit.cover,alignment: Alignment.topRight,)
+						),
 
 						Positioned(
 							bottom: 0,

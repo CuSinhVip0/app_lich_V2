@@ -11,6 +11,7 @@ import 'package:luanvan/Controller/StatusController.dart';
 import 'package:luanvan/Controller/UserController.dart';
 import 'package:luanvan/Styles/Colors.dart';
 import 'package:luanvan/pages/CreatePostPage.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../Common/NonScrollableRefreshIndicator.dart';
 import '../Component/PostV1.dart';
 import '../Styles/Themes.dart';
@@ -36,7 +37,10 @@ class StatusPage extends StatelessWidget{
 				child: NonScrollableRefreshIndicatorV2(
 					scrollController: statusController.scrollController,
 					onRefresh: () async {
-						print(1);
+						statusController.listPost.value = [];
+						statusController.finished.value = false;
+						statusController.i.value = 0;
+						statusController.getPostFromDataBase(0,5);
 					},
 					child: Container(
 						padding: EdgeInsets.all(12),
@@ -61,14 +65,19 @@ class StatusPage extends StatelessWidget{
 
 								GetBuilder(
 									init: StatusController(),
-									builder: (statusController)=>Column(
-										children: statusController.listPost.map((i)=>
-											PostV1(i,(){
-												statusController.updatelistPort('like',i['Id']);
-												statusController.updateLikeOfPosttoDataBase(i['Id'],userController.userData['id']);
-											})
-										).toList(),
-								)),
+									builder: (statusController)=> Skeletonizer(
+										enabled: !statusController.listPost.isNotEmpty,
+										child:statusController.listPost.isNotEmpty ? Column(
+											children: statusController.listPost.map((i)=>
+
+												PostV1(i,(){
+													statusController.updatelistPort('like',i['Id']);
+													statusController.updateLikeOfPosttoDataBase(i['Id'],userController.userData['id']);
+												})
+											).toList(),
+										):SizedBox()
+									)
+								),
 								Obx (()=> statusController.finished.value == true
 										? Center(
 										child:  Text("Không còn bài viết",style: titleStyle,),

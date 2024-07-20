@@ -481,7 +481,7 @@ class CalenderController extends GetxController {
 
 	@override
 	void onInit() {
-		getDateEventToSetBookmark(addM,addY);
+		// getDateEventToSetBookmark(addM,addY);
 		super.onInit();
 	}
 
@@ -502,6 +502,7 @@ class CalenderController extends GetxController {
 				pageprev();
 			}
 		});
+		getDateEventToSetBookmark(addM,addY);
 		super.onReady();
 	}
 }

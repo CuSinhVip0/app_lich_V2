@@ -66,17 +66,53 @@ class ExtensionDetail extends StatelessWidget{
 											shadowColor: Colors.transparent,
 											child: Column(
 												children: [
-													ListTile(
-														leading: CircleAvatar(
-															backgroundColor: Colors.white,
-															radius: 20.0,
-															child: CircleAvatar(
-																backgroundImage:CachedNetworkImageProvider(userController.userData['picture']['data']['url'],),
-																radius: 100.0,
+													GestureDetector(
+														onTap: () async{
+															var a = await showCupertinoModalPopup(
+																context: context,
+																builder: (_) => Container(
+																	height: 190,
+																	color: Color.fromARGB(255, 255, 255, 255),
+																	child: Column(
+																		children: [
+																			Container(
+																				height: 180,
+																				child: CupertinoDatePicker(
+																					mode: CupertinoDatePickerMode.date,
+																					initialDateTime: DateTime.now(),
+																					onDateTimeChanged: (val) {
+																						extensionDetailController.birth.value =  val.toString().split(' ')[0];
+																					}),
+																			),
+																		],
+																	),
+																));
+														},
+														child:Obx(
+															()=>Container(
+															child: Row(
+																children: [
+																	Expanded(child: ListTile(
+																		leading: CircleAvatar(
+																			backgroundColor: Colors.white,
+																			radius: 20.0,
+																			child: CircleAvatar(
+																				backgroundImage:CachedNetworkImageProvider(userController.userData['picture']['data']['url'],),
+																				radius: 100.0,
+																			),
+																		),
+																		title: Text(userController.userData['name']  ?? "",style: titleStyle,),
+																		 subtitle:extensionDetailController.birth.value ==""? null: Text(DateFormat.yMd('vi').format(DateTime(int.parse(extensionDetailController.birth.value.split("-")[0]),int.parse(extensionDetailController.birth.value.split("-")[1]),int.parse(extensionDetailController.birth.value.split("-")[2]))),style: subTitleStyle,),
+																	),),
+																	IntrinsicWidth(
+																		child:Padding(
+																			padding: EdgeInsets.only(right: 30),
+																			child: Icon(FluentIcons.person_edit_20_regular,size: 28,),
+																		),
+																	)
+																],
 															),
-														),
-														title: Text(userController.userData['name']  ?? "",style: titleStyle,),
-														// subtitle: Text(FormatTimeToString(DateTime.now().difference(DateFormat("yyyy-MM-dd hh:mm:ss").parse(detailPostController.payload['CreateAt']))),style: subTitleStyle,),
+														)),
 													),
 													SizedBox(height: 8,),
 													GestureDetector(

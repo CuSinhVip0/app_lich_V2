@@ -34,7 +34,6 @@ class InformationDetailPage extends StatelessWidget{
 							? Stack(
 							children: [
 								Container(
-
 									padding: EdgeInsets.all(12),
 									child: SingleChildScrollView(
 										padding: EdgeInsets.only(bottom: 75),
@@ -115,7 +114,7 @@ class InformationDetailPage extends StatelessWidget{
 																										Expanded(
 																											child: Align(
 																												alignment: Alignment.centerRight,
-																												child:Text(informationDetailController.InforUser['Birth'].toString().split('-').reversed.join('/') ??"",style: titleStyle),
+																												child:Text(informationDetailController.InforUser['Birth']?.toString() != null ?informationDetailController.InforUser['Birth'].toString().split('-').reversed.join('/'):"",style: titleStyle),
 																											)
 																										),
 																										IntrinsicWidth(
@@ -145,17 +144,18 @@ class InformationDetailPage extends StatelessWidget{
 																									),
 																								],
 																							),
-																							subtitle: GetBuilder(
+																							subtitle: informationDetailController.InforUser['Birth']?.toString() != null? GetBuilder(
 																								init: InformationDetailController(),
 																								builder: (informationDetailController) {
-																									var arrSolar =  informationDetailController.InforUser['Birth'].toString().split('-') ;
-																									var lunar = convertSolar2Lunar(int.parse(arrSolar[2]), int.parse(arrSolar[1]), int.parse(arrSolar[0]), 7);
-																									return Text(informationDetailController.InforUser['Birth']?.toString() != null
-																										?'Ngày ${getCanDay(jdn(int.parse(arrSolar[2]), int.parse(arrSolar[1]), int.parse(arrSolar[0])))}, ${lunar[1]}/${lunar[1]} năm ${getCanChiYear(lunar[2])}'
-																										:'',style: subTitleStyle);
+																										var arrSolar =  informationDetailController.InforUser['Birth'].toString().split('-') ;
+																										var lunar = convertSolar2Lunar(int.parse(arrSolar[2]), int.parse(arrSolar[1]), int.parse(arrSolar[0]), 7);
+																									return informationDetailController.InforUser['Birth'] == null
+																										? SizedBox()
+																										:Text(informationDetailController.InforUser['Birth']?.toString() != null
+																											?'Ngày ${getCanDay(jdn(int.parse(arrSolar[2]), int.parse(arrSolar[1]), int.parse(arrSolar[0])))}, ${lunar[1]}/${lunar[1]} năm ${getCanChiYear(lunar[2])}'
+																											:'',style: subTitleStyle) ;
 																								},
-																							),
-
+																							):null,
 
 																						),),
 																					],
@@ -178,15 +178,15 @@ class InformationDetailPage extends StatelessWidget{
 																									),
 																								],
 																							),
-																							subtitle: GetBuilder(
+																							subtitle: informationDetailController.InforUser['Birth']?.toString() != null ? GetBuilder(
 																								init: InformationDetailController(),
 																								builder: (informationDetailController) {
-																									var arrSolar =  informationDetailController.InforUser['Birth'].toString().split('-') ;
-																									return  Text(informationDetailController.InforUser['Birth'].toString() != null
+																									var arrSolar = informationDetailController.InforUser['Birth'].toString().split('-') ;
+																									return  Text(informationDetailController.InforUser['Birth']?.toString() != null
 																										?CalculateAge(DateTime(int.parse(arrSolar[0]),int.parse(arrSolar[1]),int.parse(arrSolar[2])))
 																										:'',style: subTitleStyle,);
 																								},
-																							),
+																							):null,
 
 
 																						),),

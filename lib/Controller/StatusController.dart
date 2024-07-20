@@ -34,7 +34,7 @@ class StatusController extends GetxController{
 			'NumComment':key == 1 ? post['NumComment'] + 1 :  post['NumComment'] - 1,
 			'IsLike': post['IsLike']==0?1:0
 		};
-		int index  = listPost.indexWhere((element) => element['Id'] == id);
+		var index = listPost.indexWhere((element) => element['Id'] == id);
 		listPost[index] = post;
 		update();
 		listPost.refresh();

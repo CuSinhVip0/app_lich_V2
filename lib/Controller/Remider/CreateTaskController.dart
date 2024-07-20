@@ -3,16 +3,20 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:luanvan/Controller/TaskList.dart';
 import 'package:http/http.dart' as http;
+import 'package:luanvan/Controller/UserController.dart';
 
 import '../../Enum/Data.dart';
 class CreateTaskController extends GetxController{
 	TaskListController taskListController = Get.find();
+	UserController userController = Get.find();
 	var fullTime = true.obs;
 	var DuongLich = 1.obs;
 	var startTime = "08:00".obs;
 	var endTime = "20:00".obs;
 	var selectedRemind = 0.obs;
 	var selectedRepeat = true.obs;
+	var type = 0.obs;
+	var typeEvent = [].obs;
 	DateTime selectedDate = DateTime.now();
 	DateTime selectedToDate = DateTime.now();
 	void updateSelectedDate (DateTime x){
@@ -48,8 +52,29 @@ class CreateTaskController extends GetxController{
 				"HandleRepeat":selectedRepeat.value,
 				"Remind":selectedRemind.value,
 				"DuongLich":DuongLich.value,
+				"Type":typeEvent[type.value]["Id"],
+				"Id_User":userController.userData['id'],
 			}));
 		dynamic result = jsonDecode(res.body);
 		return result;
 	}
+	Future <void> getTypeEvent() async{
+		try{
+			final res = await http.get(Uri.parse(ServiceApi.api+'/system/getLoaiSuKien'));
+			dynamic result = jsonDecode(res.body);
+			print(result['data']);
+			typeEvent.assignAll(result['data']);
+			update();
+		}
+		catch(e){
+			print("-- Lỗi xảy ra ở CreateTaskController getTypeEvent - catch --");
+			print(e);
+			print("-- End Lỗi xảy ra ở CreateTaskController getTypeEvent - catch --");
+		}
+	}
+
+	@override
+  	void onInit() {
+    	getTypeEvent();
+  	}
 }
