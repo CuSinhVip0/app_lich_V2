@@ -6,13 +6,15 @@ import 'package:get/get.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:luanvan/utils/ThemeChange.dart';
 
-import '../Enum/Data.dart';
-import '../Services/Notification.dart';
+import '../../Enum/Data.dart';
+import '../../utils/DbHelper.dart';
 class UserController extends GetxController{
+
 	var setting = {
 		"DarkMode": false,
-		"Language": "Vie",
+		"Language":"Vie",
 		"StyleTime":"24h"
 	};
 	var isLogin  = false.obs;
@@ -24,34 +26,37 @@ class UserController extends GetxController{
 
 	//#region  login
 	void checkLogin ()async{
-		final token = await FacebookAuth.instance.accessToken;
-		var userGoogle = await FirebaseAuth.instance.currentUser;
-		if(token != null){
-			userData =  await FacebookAuth.instance.getUserData();
-			accessToken = token;
-			isLogin.value = true;
-			typeLogin.value = "FB";
-			getSettingFromDataBase(userData['id'].toString());
-			update();
-			return;
-		}
-		if( userGoogle !=null) {
-
-			userData = {
-				'id' : userGoogle?.uid,
-				'name':userGoogle.displayName,
-				'email':userGoogle.email,
-				'picture': {
-					"data":{
-						"url":userGoogle.photoURL,
+		try{
+			final token = await FacebookAuth.instance.accessToken;
+			var userGoogle = await FirebaseAuth.instance.currentUser;
+			if(token != null){
+				userData =  await FacebookAuth.instance.getUserData();
+				accessToken = token;
+				isLogin.value = true;
+				typeLogin.value = "FB";
+				getSettingFromDataBase(userData['id'].toString());
+				update();
+				return;
+			}
+			if( userGoogle !=null) {
+				userData = {
+					'id' : userGoogle?.uid,
+					'name':userGoogle.displayName,
+					'email':userGoogle.email,
+					'picture': {
+						"data":{
+							"url":userGoogle.photoURL,
+						}
 					}
-				}
-			};
-			getSettingFromDataBase(userData['id'].toString());
-			isLogin.value = true;
-			typeLogin.value = "GG";
-			update();
-			return;
+				};
+				getSettingFromDataBase(userData['id'].toString());
+				isLogin.value = true;
+				typeLogin.value = "GG";
+				update();
+				return;
+			}
+		}catch(e){
+			print(e);
 		}
 	}
 
@@ -177,7 +182,11 @@ class UserController extends GetxController{
 
 	//#region update setting
 	void updateSetting (String param , dynamic value) async {
-		var res =  await updateSettingtoDataBase(param,value);
+		try{
+			var res =  await updateSettingtoDataBase(param,value);
+		}catch (e){
+			print(e);
+		}
 		setting[param] = value;
 		update();
 	}
@@ -216,6 +225,12 @@ class UserController extends GetxController{
 					"Language": result['result']['Language'],
 					"StyleTime":result['result']['StyleTime']
 				};
+				 await DbHelper.updateSetting('language',result['result']['DarkMode']);
+				 await DbHelper.updateSetting('darkmode', result['result']['Language']);
+				 await DbHelper.updateSetting('styletime',result['result']['StyleTime']);
+				 var local = result['result']['Language']=="Vie" ? Locale('vi', 'VN') : Locale('en', 'US');
+				 Get.updateLocale(local);
+				 Get.changeThemeMode(result['result']['DarkMode']==false?ThemeMode.light : ThemeMode.dark);
 				update();
 			}
 			Get.changeThemeMode(result['result']['DarkMode'] == true ? ThemeMode.dark : ThemeMode.light);
@@ -229,7 +244,17 @@ class UserController extends GetxController{
 	//#endregion
 
 	@override
-	void onInit()  {
+	void onInit() async {
+		Map<String, dynamic>? settings = await DbHelper.getSettings().then((value)  {
+			setting = {
+				"DarkMode": value?['darkmode']==1?true:false,
+				"Language":value?['language'],
+				"StyleTime":value?['styletime']
+			};
+			var local =value?['language'] =='Vie' ? Locale('vi', 'VN') : Locale('en', 'US');
+			Get.updateLocale(local);
+			Get.changeThemeMode(value?['darkmode']==0?ThemeMode.light : ThemeMode.dark);
+		});
 		checkLogin();
 		super.onInit();
 	}

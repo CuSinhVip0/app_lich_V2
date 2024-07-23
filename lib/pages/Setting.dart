@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:luanvan/Common/Button/CustomButton.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:luanvan/Styles/Colors.dart';
+import 'package:luanvan/utils/DbHelper.dart';
 import 'package:luanvan/utils/ThemeChange.dart';
 
 import '../Styles/Themes.dart';
@@ -52,7 +53,8 @@ class SettingsPage extends StatelessWidget{
 														),
 														CupertinoSwitch(
 															value: userController.setting['DarkMode'] as bool,
-															onChanged: (value){
+															onChanged: (value) async{
+																await DbHelper.updateSetting('darkmode', value?1:0);
 																userController.updateSetting('DarkMode',value);
 																Get.changeThemeMode(value == true ? ThemeMode.dark : ThemeMode.light);
 														})
@@ -87,8 +89,9 @@ class SettingsPage extends StatelessWidget{
 																	txtColor: userController.setting['Language'] == "Vie" ? Colors.white : Colors.black,
 																	bgColor: userController.setting['Language'] == "Vie" ?  RootColor.cam_nhat :Get.isDarkMode ? RootColor.button_darkmode :Colors.white,
 																	borderColor: userController.setting['Language'] == "Vie" ?  RootColor.cam_nhat : Get.isDarkMode ? RootColor.button_darkmode : Colors.grey[400] ,
-																	onTap: (){
+																	onTap: () async{
 																		userController.updateSetting("Language", "Vie");
+																		await DbHelper.updateSetting('language', 'Vie');
 																		var locale = Locale('vi', 'VN');
 																		Get.updateLocale(locale);
 																	},
@@ -104,8 +107,9 @@ class SettingsPage extends StatelessWidget{
 																	txtColor: userController.setting['Language'] != 'Vie' ? Colors.white : Colors.black,
 																	bgColor: userController.setting['Language'] != "Vie" ? RootColor.cam_nhat : Get.isDarkMode ? RootColor.button_darkmode :Colors.white,
 																	borderColor: userController.setting['Language'] != "Vie" ? RootColor.cam_nhat : Get.isDarkMode ? RootColor.button_darkmode : Colors.grey[400],
-																	onTap: (){
+																	onTap: () async{
 																		userController.updateSetting("Language", "Eng");
+																		await DbHelper.updateSetting('language', 'Eng');
 																		var locale = Locale('en', 'US');
 																		Get.updateLocale(locale);
 																	},
@@ -157,8 +161,9 @@ class SettingsPage extends StatelessWidget{
 																						txtColor: userController.setting['StyleTime'] == '12h' ? Colors.white : Colors.black,
 																						bgColor: userController.setting['StyleTime'] == '12h' ? RootColor.cam_nhat :Get.isDarkMode ? RootColor.button_darkmode : Colors.white,
 																						borderColor: userController.setting['StyleTime'] == '12h' ? RootColor.cam_nhat : Get.isDarkMode ? RootColor.button_darkmode :Colors.grey[400],
-																						onTap: (){
+																						onTap: () async{
 																							userController.updateSetting("StyleTime", '12h');
+																							await DbHelper.updateSetting('styletime','12h' );
 																						},
 																					),
 																				),
@@ -172,8 +177,9 @@ class SettingsPage extends StatelessWidget{
 																						txtColor: userController.setting['StyleTime']== '24h' ? Colors.white : Colors.black,
 																						bgColor: userController.setting['StyleTime'] == '24h' ?  RootColor.cam_nhat :Get.isDarkMode ? RootColor.button_darkmode :Colors.white,
 																						borderColor: userController.setting['StyleTime'] == '24h' ?  RootColor.cam_nhat : Get.isDarkMode ? RootColor.button_darkmode :Colors.grey[400] ,
-																						onTap: (){
+																						onTap: () async{
 																							userController.updateSetting("StyleTime", '24h');
+																							await DbHelper.updateSetting('styletime','24h' );
 																						},
 																					),
 																				)

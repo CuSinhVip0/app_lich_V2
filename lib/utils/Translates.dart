@@ -31,6 +31,9 @@ class Messages extends Translations {
 			"T6":"Fri",
 			"T7":"Sat",
 			"CN":"Sun",
+			"year":"Year",
+			"month":"Month",
+			"day":"Day",
 			"noworktoday":"No work today",
 			"Createevent":"Create event",
 			"lan":"en",
@@ -38,6 +41,10 @@ class Messages extends Translations {
 			"detailpost":"Detail post",
 			"reply":"Reply",
 			"like":"Like",
+			"Nointernetconnection":"No internet connection",
+			"Pleaseconnecttotheinternetandtryagain":"Please connect to the internet and try again",
+			"Perpetualcalendar":"Perpetual calendar",
+			"Today":"Today",
 		},
 		'vi_VN': {
 			'community': 'Cộng đồng',
@@ -67,6 +74,9 @@ class Messages extends Translations {
 			"T6":"T6",
 			"T7":"T7",
 			"CN":"CN",
+			"year":"Năm",
+			"month":"Tháng",
+			"day":"Ngày",
 			"noworktoday":"Hôm nay không có công việc nào",
 			"Createevent":"Tạo sự kiện",
 			"lan":"vi",
@@ -74,6 +84,10 @@ class Messages extends Translations {
 			"detailpost":"Chi tiết bài viết",
 			"reply":"Phản hồi",
 			"like":"Thích",
+			"Nointernetconnection":"Không có kết nối internet",
+			"Pleaseconnecttotheinternetandtryagain":"Vui lòng kết nối internet và thử lại",
+			"Perpetualcalendar":"Lịch vạn niên",
+			"Today":"Hôm nay"
 		}
 	};
 }

@@ -11,7 +11,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:luanvan/Common/Button/SmallButton.dart';
 import 'package:luanvan/Controller/PostController.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:luanvan/Services/Notification.dart';
 
 import '../Styles/Colors.dart';

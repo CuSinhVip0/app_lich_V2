@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:luanvan/Controller/DetailPostController.dart';
 import 'package:luanvan/Controller/StatusController.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 
 import '../Styles/Colors.dart';
 import '../Styles/Themes.dart';

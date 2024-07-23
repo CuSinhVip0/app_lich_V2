@@ -5,7 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
+import '../utils/ThemeChange.dart';
 import '../utils/date_utils.dart';
 import '../utils/lunar_solar_utils.dart';
 
@@ -21,7 +22,6 @@ class CalendarPoster extends StatelessWidget {
 				child:Column(
 					mainAxisSize: MainAxisSize.max,
 					children: [
-						// Image.asset('assets/1.png',),
 						SizedBox(height:350,),
 						Stack(
 							clipBehavior: Clip.none,
@@ -43,8 +43,8 @@ class CalendarPoster extends StatelessWidget {
 													child: Row(
 														mainAxisAlignment: MainAxisAlignment.spaceBetween,
 														children: [
-															Text(getNameDayOfWeek(_selectedDate!),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold )),
-															Text(_selectedDate!.year.toString(),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+															Text(DateFormat.EEEE(userController.setting['Language'] == "Vie"?'vi':'en').format(_selectedDate!),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold ,fontFamily: 'mulish')),
+															Text(_selectedDate!.year.toString(),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,fontFamily: 'mulish'),),
 														],),
 												),
 												Row(
@@ -53,27 +53,30 @@ class CalendarPoster extends StatelessWidget {
 														Expanded(flex: 1,child: Column(
 															crossAxisAlignment: CrossAxisAlignment.start,
 															children: [
-																Text(getNgayHoangDao(_selectedDate!.day, _selectedDate!.month, _selectedDate!.year)),
+																Text(getNgayHoangDao(_selectedDate!.day, _selectedDate!.month, _selectedDate!.year),style: TextStyle(fontFamily: 'mulish')),
 																SizedBox(height: 8),
-																Text("Tiết Khí: "+getTietKhi(jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year))),
-																
+																Text("Tiết Khí: "+getTietKhi(jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year)),style: TextStyle(fontFamily: 'mulish')),
+
 															],
 														)),
 														Expanded(flex:1,child: Container(
+															margin: EdgeInsets.symmetric(horizontal: 4),
 															decoration: BoxDecoration(
 																border: Border.symmetric(vertical: BorderSide(width: 1,color: Colors.grey))
 															),
 															child: Column(
 																crossAxisAlignment: CrossAxisAlignment.center,
 																children: [
-																	Text("Tháng "+lunarDate![1].toString()+" (AL)",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+																	Text("Tháng "+lunarDate![1].toString()+" (AL)",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,fontFamily: 'mulish'),),
 																	SizedBox(height: 4),
-																	Text(lunarDate![0].toString(),style: TextStyle(fontSize:30,fontWeight: FontWeight.bold),),
+																	Text(lunarDate![0].toString(),style: TextStyle(fontSize:30,fontWeight: FontWeight.bold,fontFamily: 'mulish'),),
 																	SizedBox(height: 8),
-																	Text("Giờ "+getBeginHour(_selectedDate!.hour, jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year))),
+																	Text(userController.setting['Language']!= "Vie"
+																		?getBeginHour(_selectedDate!.hour, jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year)) + " Hour"
+																		:"Giờ "+getBeginHour(_selectedDate!.hour, jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year)),style: TextStyle(fontFamily: 'mulish')),
 																	GetBuilder(
 																		init:UserController(),
-																		builder: (userController)=>Text(DateFormat(userController.setting['StyleTime'] == '24h' ? "H:mm:ss" : "h:mm:ss a").format(_selectedDate!),style: TextStyle(fontSize: 18)))
+																		builder: (userController)=>Text(DateFormat(userController.setting['StyleTime'] == '24h' ? "HH:mm:ss" : "hh:mm:ss a",userController.setting['Language'] == "Vie"?'vi':'en').format(_selectedDate!),style: TextStyle(fontSize: 18,fontFamily: 'mulish')))
 																],
 															),
 														)),
@@ -81,11 +84,16 @@ class CalendarPoster extends StatelessWidget {
 															crossAxisAlignment: CrossAxisAlignment.end,
 															mainAxisAlignment: MainAxisAlignment.start,
 															children: [
-																Text("Năm "+ getCanChiYear(_selectedDate!.year)),
+																Text(userController.setting['Language']!= "Vie"
+																	?getCanChiYear(_selectedDate!.year)+" "+'year'.tr
+																	:'year'.tr+" "+ getCanChiYear(_selectedDate!.year),style: TextStyle(fontFamily: 'mulish'),),
 																SizedBox(height: 8),
-																Text("Tháng "+getCanChiMonth(lunarDate![1], lunarDate![2])),
+																Text(userController.setting['Language']!= "Vie"
+																	? getCanChiMonth(lunarDate![1], lunarDate![2]) +" "+ 'month'.tr  : 'month'.tr+" "+getCanChiMonth(lunarDate![1], lunarDate![2]),style: TextStyle(fontFamily: 'mulish')),
 																SizedBox(height: 8),
-																Text("Ngày "+getCanDay(jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year)))
+																Text(userController.setting['Language']!= "Vie"
+																	?getCanDay(jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year))+" "+'day'.tr
+																	:"day".tr+" "+getCanDay(jdn(_selectedDate!.day,_selectedDate!.month,_selectedDate!.year)),style: TextStyle(fontFamily: 'mulish'))
 															],
 														)),
 													],
@@ -113,8 +121,10 @@ class CalendarPoster extends StatelessWidget {
 										height: 100,
 										child: Column(
 											children: [
-												Expanded(flex: 7,child: Text(_selectedDate!.day.toString(),style: TextStyle(height: 1.2,color: Colors.white,fontSize: 60,fontWeight: FontWeight.bold))),
-												Expanded(flex:3,child: Text(getNameMonthOfYear(_selectedDate!.month),style: TextStyle(height: 1.2,color: Colors.white,fontSize: 16),))
+												Expanded(flex: 7,child: Text(_selectedDate!.day.toString(),style: TextStyle(height: 1.2,color: Colors.white,fontSize: 60,fontWeight: FontWeight.bold,fontFamily: 'mulish'))),
+												Expanded(flex:3,child: Text(userController.setting['Language']!= "Vie"
+													? DateFormat.MMMM('en').format(_selectedDate!)
+													:getNameMonthOfYear(_selectedDate!.month),style:   TextStyle(height: 1.2,color: Colors.white,fontSize: 16,fontFamily: 'mulish'),))
 											],
 										),
 									))

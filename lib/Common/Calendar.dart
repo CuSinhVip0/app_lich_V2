@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:luanvan/Styles/Themes.dart';
 
 import '../utils/lunar_solar_utils.dart';
 
@@ -354,94 +357,93 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 387,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.white, boxShadow: [
-        BoxShadow(color: Colors.grey.shade500, spreadRadius: 1, blurRadius: 15, offset: Offset(0, 2)),
-      ]),
-      child: Column(mainAxisSize: MainAxisSize.max, children: [
-        Text(pick.toString()),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Color(0xffff745c),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: TextButton(
-                    onPressed: () {
-                      _controller?.animateTo((_controller!.offset - 387.4), duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
-                    },
-                    child: Icon(
-                      Icons.chevron_left_rounded,
-                      color: Colors.white,
-                    ),
-                  )),
-              Expanded(flex: 2, child: Text("Tháng ${DateTime(addY!, addM! + list[2], addD!).month} - ${DateTime(addY!, addM! + list[2], addD!).year}", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16))),
-              Expanded(
-                  flex: 1,
-                  child: TextButton(
-                    onPressed: () {
-                      _controller?.animateTo((_controller!.offset + 387.4), duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
-                    },
-                    child: Icon(
-                      Icons.chevron_right_rounded,
-                      color: Colors.white,
-                    ),
-                  )),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: Row(
-            children: [
-              Expanded(flex: 1, child: Text("T2", textAlign: TextAlign.center)),
-              Expanded(flex: 1, child: Text("T3", textAlign: TextAlign.center)),
-              Expanded(flex: 1, child: Text("T4", textAlign: TextAlign.center)),
-              Expanded(flex: 1, child: Text("T5", textAlign: TextAlign.center)),
-              Expanded(flex: 1, child: Text("T6", textAlign: TextAlign.center)),
-              Expanded(flex: 1, child: Text("T7", textAlign: TextAlign.center)),
-              Expanded(
-                  flex: 1,
-                  child: Text(
-                    "CN",
-                    textAlign: TextAlign.center,
-                  )),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 320,
-          child: ScrollConfiguration(
-            behavior: ScrollConfiguration.of(context).copyWith(
-              dragDevices: {
-                PointerDeviceKind.mouse,
-                PointerDeviceKind.touch,
-              },
-            ),
-            child: CustomScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: _controller,
-              center: ValueKey(0),
-              physics: PageScrollPhysics(),
-              slivers: [
-                SliverFillViewport(delegate: SliverChildBuilderDelegate((context, index) {
-                  return pagesprev![index];
-                })),
-                SliverFillViewport(
-                    key: ValueKey(0),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return pages![index];
-                    }))
-              ],
-            ),
-          ),
-        )
-      ]),
-    );
+      return Container(
+          width: 387,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.white, boxShadow: [
+              BoxShadow(color: Colors.grey.shade500, spreadRadius: 1, blurRadius: 15, offset: Offset(0, 2)),
+          ]),
+          child: Column(mainAxisSize: MainAxisSize.max, children: [
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffff745c),
+                  ),
+                  child: Row(
+                      children: [
+                          Expanded(
+                              flex: 1,
+                              child: TextButton(
+                                  onPressed: () {
+                                      _controller?.animateTo((_controller!.offset - 387.4), duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                                  },
+                                  child: Icon(
+                                      Icons.chevron_left_rounded,
+                                      color: Colors.white,
+                                  ),
+                              )),
+                          Expanded(flex: 2, child: Text(" ${DateFormat.yMMMM('vi').format(DateTime(addY!, addM! + list[2], addD!)).capitalizeFirst}", textAlign: TextAlign.center, style: CustomStyle(16, Colors.white, FontWeight.w500))),
+                          Expanded(
+                              flex: 1,
+                              child: TextButton(
+                                  onPressed: () {
+                                      _controller?.animateTo((_controller!.offset + 387.4), duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                                  },
+                                  child: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Colors.white,
+                                  ),
+                              )),
+                      ],
+                  ),
+              ),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Row(
+                      children: [
+                          Expanded(flex: 1, child: Text("T2", textAlign: TextAlign.center)),
+                          Expanded(flex: 1, child: Text("T3", textAlign: TextAlign.center)),
+                          Expanded(flex: 1, child: Text("T4", textAlign: TextAlign.center)),
+                          Expanded(flex: 1, child: Text("T5", textAlign: TextAlign.center)),
+                          Expanded(flex: 1, child: Text("T6", textAlign: TextAlign.center)),
+                          Expanded(flex: 1, child: Text("T7", textAlign: TextAlign.center)),
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                  "CN",
+                                  textAlign: TextAlign.center,
+                              )),
+                      ],
+                  ),
+              ),
+              SizedBox(
+                  height: 320,
+                  child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: {
+                              PointerDeviceKind.mouse,
+                              PointerDeviceKind.touch,
+                          },
+                      ),
+                      child: CustomScrollView(
+                          scrollDirection: Axis.horizontal,
+                          controller: _controller,
+                          center: ValueKey(0),
+                          physics: PageScrollPhysics(),
+                          slivers: [
+                              SliverFillViewport(delegate: SliverChildBuilderDelegate((context, index) {
+                                  return pagesprev![index];
+                              })),
+                              SliverFillViewport(
+                                  key: ValueKey(0),
+                                  delegate: SliverChildBuilderDelegate((context, index) {
+                                      return pages![index];
+                                  }))
+                          ],
+                      ),
+                  ),
+              )
+          ]),
+      );
   }
 
 

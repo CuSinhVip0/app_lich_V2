@@ -6,7 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:luanvan/Controller/Status/UpdateController.dart';
 
 import 'package:luanvan/Styles/Colors.dart';
-import '../../Controller/UserController.dart';
+import '../../Controller/Component/UserController.dart';
 
 import '../../Styles/Themes.dart';
 

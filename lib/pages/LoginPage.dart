@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:luanvan/Controller/LoginController.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'dart:ui' as ui;
 import '../Auth.dart';
 import '../Common/Input/Input.dart';

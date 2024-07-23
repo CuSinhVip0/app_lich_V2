@@ -9,7 +9,7 @@ import 'package:luanvan/Enum/Reminder/remindListOption.dart';
 import '../../Common/Button/SmallButton.dart';
 import '../../Styles/Colors.dart';
 import '../../Styles/Themes.dart';
-import '../../pages/home.dart';
+import '../../pages/Home/home.dart';
 import '../../utils/date_utils.dart';
 import '../../utils/lunar_solar_utils.dart';
 

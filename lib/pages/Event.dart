@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'Extension.dart';
 import 'ReminderPage.dart';
 import 'StatusPage.dart';
-import 'home.dart';
+import 'Home/home.dart';
 
 class EventPage extends StatefulWidget
 {

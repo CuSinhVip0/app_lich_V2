@@ -5,7 +5,7 @@ import '../pages/Event.dart';
 import '../pages/Extension.dart';
 import '../pages/ReminderPage.dart';
 import '../pages/StatusPage.dart';
-import '../pages/home.dart';
+import '../pages/Home/home.dart';
 class Pages {
 	static List<Widget> pages = [
 		HomePage(),

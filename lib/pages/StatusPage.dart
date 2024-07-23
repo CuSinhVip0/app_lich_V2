@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:luanvan/Common/NonScrollableRefreshIndicatorV2.dart';
 import 'package:luanvan/Component/AppBar/OptionsMenu.dart';
 import 'package:luanvan/Controller/StatusController.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:luanvan/Styles/Colors.dart';
 import 'package:luanvan/pages/CreatePostPage.dart';
 import 'package:skeletonizer/skeletonizer.dart';

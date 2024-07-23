@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
-import '../Enum/Data.dart';
-import '../utils/lunar_solar_utils.dart';
+import '../../Enum/Data.dart';
+import '../../utils/lunar_solar_utils.dart';
 
 class HomeController extends GetxController{
 	DateTime selectedDate = DateTime.now();
@@ -105,18 +105,4 @@ class HomeController extends GetxController{
 	}
 }
 
-			// setState(() {
-			// 	xuathanh = 	XuatHanh.fromJson(res['xuathanh']);
-			// 	hungTinh = res['hungtinh'].map((i)=>CatHungTinh.fromJson(i)).toList();
-			// 	catTinh = res['cattinh'].map((i)=>CatHungTinh.fromJson(i)).toList();
-			// 	xungKhac = res['xungkhac'].map((i)=>CanChi.fromJson(i)).toList();
-			// 	truc = Truc.fromJson(res['truc']);
-			// 	than = Than.fromJson(res['than']);
-			// 	sao = Sao.fromJson(res['sao']);
-			// 	menhNam = Menh.fromJson(res['menhnam']);
-			// 	menhNgay = Menh.fromJson(res['menhngay']);
-			// 	setState(() {
-			// 		loading	 =false;
-			// 	});
-			// });
 

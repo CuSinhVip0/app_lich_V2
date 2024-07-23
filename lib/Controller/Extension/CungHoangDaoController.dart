@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import'package:http/http.dart' as http;
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 
 import '../../Enum/Data.dart';
 class CungHoangDaoController extends GetxController{
@@ -19,7 +19,6 @@ class CungHoangDaoController extends GetxController{
 			dynamic result = jsonDecode(res.body);
 			if(result['status']=='oke'){
 				data.assignAll(result['data']);
-				print(result['data'].toString());
 			}
 			loading.value = false;
 			update();

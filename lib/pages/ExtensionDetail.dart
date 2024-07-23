@@ -3,7 +3,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +13,7 @@ import 'package:luanvan/Common/Input/Input.dart';
 import 'package:luanvan/Controller/DetailPostController.dart';
 import 'package:luanvan/Controller/Extension/ExtensionDetailController.dart';
 import 'package:luanvan/Controller/StatusController.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 
 import '../Component/Reminder/CreateTask.dart';
 import '../Styles/Colors.dart';
@@ -294,6 +293,5 @@ class ExtensionDetail extends StatelessWidget{
 				return Iconify(EmojioneV1.pig_face);
 			default: return SizedBox();
 		}
-
 	}
 }

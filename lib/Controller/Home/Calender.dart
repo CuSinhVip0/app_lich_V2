@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jiffy/jiffy.dart';
 
-import '../Enum/Data.dart';
-import '../Styles/Colors.dart';
-import '../utils/lunar_solar_utils.dart';
-import 'TaskList.dart';
+import '../../Enum/Data.dart';
+import '../../Styles/Colors.dart';
+import '../../utils/lunar_solar_utils.dart';
+import '../TaskList.dart';
 class CalenderController extends GetxController {
 	var taskListController  = Get.put(TaskListController());
 	var addY = (DateTime.now().year);

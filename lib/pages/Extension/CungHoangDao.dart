@@ -15,7 +15,7 @@ import 'package:luanvan/Common/Input/Input.dart';
 import 'package:luanvan/Controller/DetailPostController.dart';
 import 'package:luanvan/Controller/Extension/ExtensionDetailController.dart';
 import 'package:luanvan/Controller/StatusController.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../Component/Reminder/CreateTask.dart';
 import '../../Controller/Extension/CungHoangDaoController.dart';

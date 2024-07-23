@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:luanvan/Common/Button/CustomButton.dart';
-import 'package:luanvan/Controller/UserController.dart';
+import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:luanvan/pages/InformationDetailPage.dart';
 import 'package:luanvan/pages/Setting.dart';
 
