@@ -5,7 +5,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
+import 'package:luanvan/Component/Reminder/ListDetail.dart';
 import 'package:luanvan/Controller/DetailPostController.dart';
+import 'package:luanvan/Controller/Task.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,12 +23,20 @@ class NotificationServices{
 		);
 		await flutterLocalNotificationsPlugin.initialize(
 			initializationSettings,
-			onDidReceiveNotificationResponse: onTapLocalNotification,
+			onDidReceiveNotificationResponse: (NotificationResponse response) {
+				handleNotificationTap(response.payload);
+			},
 		);
 	}
 
-	void onTapLocalNotification(NotificationResponse notificationResponse) async {
-		Get.toNamed('/detailPost' , parameters:{"payload":notificationResponse.payload!});
+	@pragma('vm:entry-point')
+	void notificationTapBackground(NotificationResponse response) {
+		// Gọi hàm xử lý chung
+		handleNotificationTap(response.payload);
+	}
+	void handleNotificationTap(String? payload) {
+		print("payload ${payload.toString()}");
+		Get.to(()=>TaskDetailPage(payload: payload,));
 	}
 
 	Future<void> showNotification(int id, String title) async {
@@ -52,7 +62,8 @@ class NotificationServices{
 		int month,
 		int day,
 		int hour,
-		int minute
+		int minute,
+		dynamic full,
 		) async{
 		await flutterLocalNotificationsPlugin.zonedSchedule(
 			id,
@@ -68,13 +79,42 @@ class NotificationServices{
 			),
 			androidAllowWhileIdle: true,
 			uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-			matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+			matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+			payload: full.toString()
 		);
 	}
-	tz.TZDateTime convertTime(int year, int month, int day, int hour, int minute){
+
+	// Future<void> scheduleNotification(int minutes) async {
+	// 	var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+	// 		'reminder_channel_id',
+	// 		'Reminders',
+	// 		channelDescription: 'Channel for reminder notifications',
+	// 		importance: Importance.high,
+	// 		priority: Priority.high,
+	// 	);
+	// 	var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+	// 	var platformChannelSpecifics = NotificationDetails(
+	// 		android: androidPlatformChannelSpecifics,
+	// 		iOS: iOSPlatformChannelSpecifics,
+	// 	);
+	//
+	// 	await flutterLocalNotificationsPlugin.zonedSchedule(
+	// 		0,
+	// 		'Nhắc nhở',
+	// 		'Đây là thông báo nhắc nhở của bạn',
+	// 		tz.TZDateTime.now(tz.local).add(Duration(minutes: minutes)),
+	// 		platformChannelSpecifics,
+	// 		androidAllowWhileIdle: true,
+	// 		uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+	// 	);
+	// }
+
+
+
+	tz.TZDateTime convertTime(int year, int month, int day, int hour, int minute) {
 		final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-		tz.TZDateTime schedule = tz.TZDateTime(tz.local,year, month,day,hour,minute);
-		if(schedule.isBefore(now)){
+		tz.TZDateTime schedule = tz.TZDateTime(tz.local, year, month, day, hour, minute);
+		if (schedule.isBefore(now)) {
 			schedule = schedule.add(const Duration(days: 1));
 		}
 		return schedule;

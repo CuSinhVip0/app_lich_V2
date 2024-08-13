@@ -41,6 +41,7 @@ class StatusController extends GetxController{
 	}
 
 	void getPostFromDataBase(int index, int limit) async {
+
 		try{
 			final res = await http.post(Uri.parse(ServiceApi.api+'/post/getPostFromDataBase'),
 				headers: {"Content-Type": "application/json"},
@@ -69,7 +70,7 @@ class StatusController extends GetxController{
 
 	Future<void> updateLikeOfPosttoDataBase (int id,String id_user) async {
 		try {
-			final res = await http.post(Uri.parse(ServiceApi.api + '/post/updateLikeOfPosttoDataBase'),
+			final res = await http.post(Uri.parse(ServiceApi.api + '/post/LV_updateLikeOfPosttoDataBase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Id_Post":id,
@@ -79,9 +80,9 @@ class StatusController extends GetxController{
 			return result;
 		}
 		catch (e) {
-			print("-- Lỗi xảy ra ở UserController updateLikeOfPosttoDataBase - catch --");
+			print("-- Lỗi xảy ra ở UserController LV_updateLikeOfPosttoDataBase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở UserController updateLikeOfPosttoDataBase - catch --");
+			print("-- End Lỗi xảy ra ở UserController LV_updateLikeOfPosttoDataBase - catch --");
 		}
 	}
 	

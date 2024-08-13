@@ -45,7 +45,7 @@ class ExtensionDetailController extends GetxController{
 	Future<void> getGoodDay(String id, int Id_Su) async{
 		loading.value =true;
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/infor/getGoodDay'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/infor/LV_getGoodDay'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Id_User":id,
@@ -62,15 +62,15 @@ class ExtensionDetailController extends GetxController{
 			update();
 		}
 		catch(e){
-			print("-- Lỗi xảy ra ở InformationDetailController getGoodDay - catch --");
-			print(e);
-			print("-- End Lỗi xảy ra ở InformationDetailController getGoodDay - catch --");
+			print("-- Lỗi xảy ra ở ExtensionDetailController LV_getGoodDay - catch --");
+			print(e);loading.value = false;
+			print("-- End Lỗi xảy ra ở ExtensionDetailController LV_getGoodDay - catch --");
 		}
 	}
 	Future<void> getBirth() async{
 		loading.value =true;
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/system/getBirthforUser'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/system/LV_getBirthforUser'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"UserId":userController.userData['id'],
@@ -87,9 +87,10 @@ class ExtensionDetailController extends GetxController{
 			update();
 		}
 		catch(e){
-			print("-- Lỗi xảy ra ở InformationDetailController getGoodDay - catch --");
+			print("-- Lỗi xảy ra ở ExtensionDetailController LV_getBirthforUser - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở InformationDetailController getGoodDay - catch --");
+			loading.value = false;
+			print("-- End Lỗi xảy ra ở ExtensionDetailController LV_getBirthforUser - catch --");
 		}
 	}
 

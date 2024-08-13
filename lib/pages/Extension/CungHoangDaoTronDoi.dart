@@ -17,17 +17,18 @@ import 'package:luanvan/Controller/Extension/ExtensionDetailController.dart';
 import 'package:luanvan/Controller/StatusController.dart';
 import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../Component/Reminder/CreateTask.dart';
+import '../Reminder/CreateTask.dart';
 import '../../Controller/Extension/CungHoangDaoController.dart';
 import '../../Styles/Colors.dart';
 import '../../Styles/Themes.dart';
 import '../../utils/formatTimeToString.dart';
 import '../../utils/lunar_solar_utils.dart';
 import 'package:colorful_iconify_flutter/icons/emojione_v1.dart';
-class CungHoangDaoTronDoiPage extends StatelessWidget{
+import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
+
+class CungHoangDaoTronDoiPage extends StatelessWidget  {
 	CungHoangDaoController cungHoangDaoController = Get.find();
 	UserController userController = Get.find();
-
 	CungHoangDaoTronDoiPage();
 	@override
 	Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class CungHoangDaoTronDoiPage extends StatelessWidget{
 			child: Scaffold(
 				appBar: AppBar(
 					centerTitle: true,
-					title: Text("Cung hoàng đạo trọn đời",style: AppBarTitleStyle(Colors.white),),
+					title: Text("zodiaclt".tr,style: AppBarTitleStyle(Colors.white),),
 					backgroundColor: Get.isDarkMode ? RootColor.den_appbar : RootColor.cam_nhat,
 					shadowColor: Colors.transparent,
 					elevation: 0,
@@ -50,9 +51,7 @@ class CungHoangDaoTronDoiPage extends StatelessWidget{
 							Get.back();
 						}
 					},
-					child: Container(
-						color: RootColor.bg_body,
-						height: double.infinity,
+					child: Card(
 						child: SingleChildScrollView(
 							physics: BouncingScrollPhysics(),
 							child: GetBuilder(
@@ -99,202 +98,42 @@ class CungHoangDaoTronDoiPage extends StatelessWidget{
 												),
 												SizedBox(height: 30,),
 												Card(
-													shadowColor: Colors.transparent,
-													elevation: 0,
-													surfaceTintColor: Colors.white,
-													borderOnForeground: false,
+													elevation: 4,
 													child: Container(
-														padding: EdgeInsets.all(12),
-														width: double.infinity,
+														padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
 														child: Column(
 															children: [
 																Container(
-																	child: Row(
-																		children: [
-																			IntrinsicWidth(child: Iconify(EmojioneV1.glowing_star),),
-																			SizedBox(width: 12,),
-																			Text("Sự may mắn",style: titleStyle,),
+																	child: TabBar(
+																		controller: cungHoangDaoController.tab,
+																		labelColor: RootColor.cam_nhat,
+																		unselectedLabelColor: Colors.grey,
+																		labelStyle: titleStyle,
+																		tabs: [
+																			Tab(text: "Global".tr,),
+																			Tab(text: "Summary".tr,),
+																			Tab(text: "Male".tr,),
+																			Tab(text: "Female".tr,),
 																		],
 																	),
 																),
 																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
+																	width:double.infinity,
+																	child: AutoScaleTabBarView (
+																		controller: cungHoangDaoController.tab,
 																		children: [
-																			Text("Màu may mắn",style: CustomStyle(16,Colors.grey[600]!, FontWeight.w400),textAlign: TextAlign.start,),
-																			SizedBox(width: 12,),
-																			Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['ColorLucky']:"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)
-																		],
-																	),
-																),
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Text("Sao hợp",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),textAlign: TextAlign.start,),
-																			SizedBox(width: 12,),
-																			Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['SaoLucky']:"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)
-																		],
-																	),
-																),
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Text("Số may mắn",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),textAlign: TextAlign.start,),
-																			SizedBox(width: 12,),
-																			SizedBox(width: 12,),
-																			Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['NumberLucky']:"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)
-																		],
-																	),
-																),
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Text("Đàm phán thành công",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),textAlign: TextAlign.start,),
-																			SizedBox(width: 12,),
-																			SizedBox(width: 12,),
-																			Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['DamPhanTC'].toString():"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)
+																			Obx(() => Text(cungHoangDaoController.data[cungHoangDaoController.index.value]["Description"],style: CustomStyle(16, Colors.black, FontWeight.w400),textAlign: TextAlign.justify,)),
+																			Obx(() => Text(cungHoangDaoController.data[cungHoangDaoController.index.value]["Summary"],style: CustomStyle(16, Colors.black, FontWeight.w400),textAlign: TextAlign.justify,)),
+																			Obx(() => Text(cungHoangDaoController.data[cungHoangDaoController.index.value]["Male"],style: CustomStyle(16, Colors.black, FontWeight.w400),textAlign: TextAlign.justify,)),
+																			Obx(() => Text(cungHoangDaoController.data[cungHoangDaoController.index.value]["Female"],style: CustomStyle(16, Colors.black, FontWeight.w400),textAlign: TextAlign.justify,)),
 																		],
 																	),
 																)
 															],
 														),
-													)
-												),
-												Card(
-													shadowColor: Colors.transparent,
-													elevation: 0,
-													surfaceTintColor: Colors.white,
-													borderOnForeground: false,
-													child: Container(
-														padding: EdgeInsets.all(12),
-														width: double.infinity,
-														child: Column(
-															children: [
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Expanded(child: Container(
-																				child: Row(
-																					children: [
-																						IntrinsicWidth(child: Iconify(EmojioneV1.money_bag),),
-																						SizedBox(width: 12,),
-																						Text("Sự nghiệp",style: titleStyle,),
-																					],
-																				),
-																			),),
-																			IntrinsicWidth(
-																				child: Obx(()=>Container(
-																					child: Row(
-																						children: [1,2,3,4,5].map((i){
-																							return i>cungHoangDaoController.data[cungHoangDaoController.index.value]['ChiSoSuNghiep']
-																								?Icon(FluentIcons.star_20_regular,size: 22,color: RootColor.cam_nhat,)
-																								:Icon(FluentIcons.star_20_filled,size: 22,color: RootColor.cam_nhat,);
-																						}).toList(),
-																					),
-																				),)
-																			)
-																		],
-																	),
-																),
-																SizedBox(height: 8,),
-																Container( child: Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['SuNghiep']??"":"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)),
+													),
+												)
 
-															],
-														),
-													)
-												),
-												Card(
-													shadowColor: Colors.transparent,
-													elevation: 0,
-													surfaceTintColor: Colors.white,
-													borderOnForeground: false,
-													child: Container(
-														padding: EdgeInsets.all(12),
-														width: double.infinity,
-														child: Column(
-															children: [
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Expanded(child: Container(
-																				child: Row(
-																					children: [
-																						IntrinsicWidth(child: Iconify(EmojioneV1.love_letter),),
-																						SizedBox(width: 12,),
-																						Text("Tình cảm",style: titleStyle,),
-																					],
-																				),
-																			)),
-																			IntrinsicWidth(
-																				child: Obx(()=>Container(
-																					child: Row(
-																						children: [1,2,3,4,5].map((i){
-																							return i>cungHoangDaoController.data[cungHoangDaoController.index.value]['ChiSoTinhCam']
-																								?Icon(FluentIcons.star_20_regular,size: 22,color: RootColor.cam_nhat,)
-																								:Icon(FluentIcons.star_20_filled,size: 22,color: RootColor.cam_nhat,);
-																						}).toList(),
-																					),
-																				),)
-																			)
-																		],
-																	),
-																),
-																SizedBox(height: 8,),
-																Container( child: Obx(() => Text(cungHoangDaoController.data.length>0 ?cungHoangDaoController.data[cungHoangDaoController.index.value]['TinhCam']??"":"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)),
-
-															],
-														),
-													)
-												),
-												Card(
-													shadowColor: Colors.transparent,
-													elevation: 0,
-													surfaceTintColor: Colors.white,
-													borderOnForeground: false,
-													child: Container(
-														padding: EdgeInsets.all(12),
-														width: double.infinity,
-														child: Column(
-															children: [
-																Container(
-																	child: Row(
-																		mainAxisAlignment: MainAxisAlignment.spaceBetween,
-																		children: [
-																			Expanded(child: Container(
-																				child: Row(
-																					children: [
-																						IntrinsicWidth(child: Iconify(EmojioneV1.face_blowing_a_kiss),),
-																						SizedBox(width: 12,),
-																						Text("Tâm trạng",style: titleStyle,),
-																					],
-																				),
-																			)),
-																			IntrinsicWidth(
-																				child: Obx(()=>Container(
-																					child: Row(
-																						children: [1,2,3,4,5].map((i){
-																							return i>cungHoangDaoController.data[cungHoangDaoController.index.value]['ChiSoTamTrang']
-																								?Icon(FluentIcons.star_20_regular,size: 22,color: RootColor.cam_nhat,)
-																								:Icon(FluentIcons.star_20_filled,size: 22,color: RootColor.cam_nhat,);
-																						}).toList(),
-																					),
-																				),)
-																			)
-																		],
-																	),
-																),
-																SizedBox(height: 8,),
-																Container( child: Obx(() => Text(cungHoangDaoController.data.length>0 ? cungHoangDaoController.data[cungHoangDaoController.index.value]['TamTrang'] ??"":"",style: CustomStyle(15,Colors.grey[600]! , FontWeight.w400),),)),
-
-															],
-														),
-													)
-												),
 
 											],
 										),

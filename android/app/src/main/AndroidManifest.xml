@@ -8,9 +8,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
-        android:label="luanvan"
+        android:label="Lịch vạn niên"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/mainicon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

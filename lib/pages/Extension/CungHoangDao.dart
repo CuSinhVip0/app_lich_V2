@@ -1,28 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:luanvan/Common/Button/ConfirmButton.dart';
-import 'package:luanvan/Common/Button/MainButton.dart';
-import 'package:luanvan/Common/Input/Input.dart';
-import 'package:luanvan/Controller/DetailPostController.dart';
-import 'package:luanvan/Controller/Extension/ExtensionDetailController.dart';
-import 'package:luanvan/Controller/StatusController.dart';
 import 'package:luanvan/Controller/Component/UserController.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../../Component/Reminder/CreateTask.dart';
 import '../../Controller/Extension/CungHoangDaoController.dart';
 import '../../Styles/Colors.dart';
 import '../../Styles/Themes.dart';
-import '../../utils/formatTimeToString.dart';
-import '../../utils/lunar_solar_utils.dart';
 import 'package:colorful_iconify_flutter/icons/emojione_v1.dart';
 class CungHoangDaoPage extends StatelessWidget{
 	CungHoangDaoController cungHoangDaoController = Get.find();

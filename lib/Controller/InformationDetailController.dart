@@ -18,7 +18,7 @@ class InformationDetailController extends GetxController{
 
 	Future<void> getInforFromDatabase(String id ) async{
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/user/getInforFromDatabase'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/user/LV_getInforFromDatabase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Id_User":id,
@@ -29,9 +29,9 @@ class InformationDetailController extends GetxController{
 			update();
 		}
 		catch(e){
-			print("-- Lỗi xảy ra ở InformationDetailController getInforFromDatabase - catch --");
+			print("-- Lỗi xảy ra ở InformationDetailController LV_getInforFromDatabase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở InformationDetailController getInforFromDatabase - catch --");
+			print("-- End Lỗi xảy ra ở InformationDetailController LV_getInforFromDatabase - catch --");
 		}
 	}
 
@@ -57,7 +57,7 @@ class InformationDetailController extends GetxController{
 
 	Future<bool> updateInforToDatabase_V2() async{
 		try{
-			final res = await http.post(Uri.parse(ServiceApi.api+'/user/updateInforToDatabase'),
+			final res = await http.post(Uri.parse(ServiceApi.api+'/user/LV_updateInforToDatabase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Id_User":userController.userData['id'],
@@ -74,9 +74,9 @@ class InformationDetailController extends GetxController{
 			return false;
 		}
 		catch(e){
-			print("-- Lỗi xảy ra ở InformationDetailController updateInforToDatabase - catch --");
+			print("-- Lỗi xảy ra ở InformationDetailController LV_updateInforToDatabase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở InformationDetailController updateInforToDatabase - catch --");
+			print("-- End Lỗi xảy ra ở InformationDetailController LV_updateInforToDatabase - catch --");
 			return false;
 		}
 	}

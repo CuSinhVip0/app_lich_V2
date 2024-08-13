@@ -65,7 +65,9 @@ dependencies:
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
   sqflite: ^2.3.3+1
-
+  autoscale_tabbarview: ^1.0.2
+  flutter_slidable: ^3.1.1
+  flutter_native_splash: ^2.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,6 +81,16 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+flutter_native_splash:
+  color: "#e1f5fe"
+  image: assets/logo_lockup_flutter_vertical.png
+  color_dark: "#042a49"
+  image_dark: assets/logo_lockup_flutter_vertical_wht.png
+  android_12:
+    image: assets/android12splash.png
+    color: "#42a5f5"
+    icon_background_color: "#eeeeee"
+  fullscreen: true
 
 # The following section is specific to Flutter packages.
 flutter:

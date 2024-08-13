@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../pages/Home/home.dart';
 import '../../utils/date_utils.dart';
 import '../../utils/lunar_solar_utils.dart';
 
@@ -25,7 +24,7 @@ class _EventDetail extends State<EventDetailPage>{
 			body: Container(
 				child: Column(
 					children: [
-						Image.asset('assets/Tet-nguyen-dan-2022-1.jpg'),
+					Image.asset('assets/Tet-nguyen-dan-2022-1.jpg'),
 						Padding(
 							padding:EdgeInsets.symmetric(horizontal: 16,vertical: 14),
 							child: Align(

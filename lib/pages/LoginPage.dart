@@ -1,15 +1,13 @@
 import 'dart:ui';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:colorful_iconify_flutter/icons/emojione.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:luanvan/Controller/LoginController.dart';
 import 'package:luanvan/Controller/Component/UserController.dart';
-import 'dart:ui' as ui;
-import '../Auth.dart';
-import '../Common/Input/Input.dart';
 import '../Styles/Colors.dart';
 import '../Styles/Themes.dart';
 
@@ -39,91 +37,176 @@ class LoginPage extends StatelessWidget {
 				shadowColor: Colors.transparent, // <-- and this
 				elevation: 0,
 			),
-			body:  Container(
-				decoration: BoxDecoration(
-					image: DecorationImage(
-						image: AssetImage("assets/backgroundLoginPage.jpg"),
-						fit: BoxFit.cover,
-					),
-				),
-				height: double.infinity,
-				width: double.infinity,
-				padding: EdgeInsets.all(20),
-				child: Column(
-					crossAxisAlignment: CrossAxisAlignment.center,
-					mainAxisAlignment: MainAxisAlignment.center,
+			body:  Obx(
+				()=>Stack(
 					children: [
-						Column(
-							children: [
-								Padding(padding: EdgeInsets.symmetric(horizontal: 20),
-									child: Column(
+						Container(
+							decoration: BoxDecoration(
+								image: DecorationImage(
+									image: AssetImage("assets/backgroundLoginPage.jpg"),
+									fit: BoxFit.cover,
+								),
+							),
+							height: double.infinity,
+							width: double.infinity,
+							padding: EdgeInsets.all(20),
+							child: Column(
+								crossAxisAlignment: CrossAxisAlignment.center,
+								mainAxisAlignment: MainAxisAlignment.center,
+								children: [
+									Column(
 										children: [
-											Text("Logintoyouraccounttojoinustohelpyou".tr,style: CustomStyle(16,Colors.white,FontWeight.w400),),
-											Text("Storeandsynchronizeeventsanddataontheapponalldevices".tr,style: CustomStyle(15,Colors.white,FontWeight.w400))
-										],
-									),
-								),
-								SizedBox(height: 50,),
-								GestureDetector(
-									onTap: () async{
-										bool res = await userController.loginFaceBook();
-										if(res) {
-											await userController.insertInforToDatabase(userController.userData['id'], 'FB',userController.userData['name'],userController.userData['picture']['data']['url'],userController.userData['email']);
-											Get.back();
-										}
-										else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
-									},
-									child: Card(
-										child: Container(
-											width: 300,
-											decoration: BoxDecoration(
-												borderRadius: BorderRadius.circular(32),
-											),
-											child:ListTile(
-												titleAlignment: ListTileTitleAlignment.center,
-												leading: SvgPicture.asset('assets/icons-facebook.svg'),
-												title: Center(
-													child: Text("SigninwithFacebook".tr, style: CustomStyle(16, Colors.black, FontWeight.w400 ),),
-												)
-											),
-										),
-									)
-								),
-								SizedBox(height: 20,),
-								GestureDetector(
-									onTap: () async{
-										var res = await userController.signInWithGoogle();
-										if(res) {
-											await userController.insertInforToDatabase(userController.userData['id'], 'GG',userController.userData['name'],userController.userData['picture']['data']['url'],userController.userData['email']);
-											Get.back();
-										}
-										else Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
-									},
-									child: Card(
-										child: Container(
-											width: 300,
-											decoration: BoxDecoration(
-												borderRadius: BorderRadius.circular(32),
-											),
-											child:ListTile(
-												titleAlignment: ListTileTitleAlignment.center,
-												leading: SvgPicture.asset('assets/icons-google.svg'),
-												title: Center(
-													child: Text("SigninwithGoogle".tr, style: CustomStyle(16, Colors.black, FontWeight.w400 ),),
+											Padding(padding: EdgeInsets.symmetric(horizontal: 20),
+												child: Column(
+													children: [
+														Text("Logintoyouraccounttojoinustohelpyou".tr,style: CustomStyle(16,Colors.white,FontWeight.w400),),
+														Text("Storeandsynchronizeeventsanddataontheapponalldevices".tr,style: CustomStyle(15,Colors.white,FontWeight.w400))
+													],
 												),
 											),
-										),
+											SizedBox(height: 50,),
+											GestureDetector(
+												onTap: () async{
+													bool res = await userController.loginFaceBook();
+													if(!res) {
+														Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
+													}
+													else{
+														var result = await loginController.LV_spGetInforFromDatabase('FB');
+														if(result==0){
+															Navigator.of(context).pop(true);
+														}
+														Future.delayed(Duration(seconds: 3)).then((value) async{
+															if(result==1) {
+																loginController.showSyncDialog.value = true;
+																loginController.success.value = 0;
+																Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.of(context).pop(true));
+															}
+															else {
+																loginController.showSyncDialog.value = true;
+																loginController.success.value = 2;
+																Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.of(context).pop(true));
+															};
+														});
+													}
+												},
+												child: Card(
+													child: Container(
+														width: 300,
+														decoration: BoxDecoration(
+															borderRadius: BorderRadius.circular(32),
+														),
+														child:ListTile(
+															titleAlignment: ListTileTitleAlignment.center,
+															leading: SvgPicture.asset('assets/icons-facebook.svg'),
+															title: Center(
+																child: Text("SigninwithFacebook".tr, style: CustomStyle(16, Colors.black, FontWeight.w400 ),),
+															)
+														),
+													),
+												)
+											),
+											SizedBox(height: 20,),
+											GestureDetector(
+												onTap: () async{
+													var res = await userController.signInWithGoogle();
+													if(!res) {
+														Get.snackbar("Loginerror".tr, 'Pleasetryagain'.tr,snackPosition: SnackPosition.BOTTOM);
+													}
+													else{
+														var result = await loginController.LV_spGetInforFromDatabase('GG');
+														if(result==0){
+															Navigator.of(context).pop(true);
+															return;
+														}
+														loginController.showSyncDialog.value = true;
+														Future.delayed(Duration(seconds: 3)).then((value) async{
+															if(result==1) {
+																loginController.success.value = 0;
+																Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.of(context).pop(true));
+															}
+															else {
+																loginController.success.value = 2;
+																Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.of(context).pop(true));
+															};
+														});
+													}
+												},
+												child: Card(
+													child: Container(
+														width: 300,
+														decoration: BoxDecoration(
+															borderRadius: BorderRadius.circular(32),
+														),
+														child:ListTile(
+															titleAlignment: ListTileTitleAlignment.center,
+															leading: SvgPicture.asset('assets/icons-google.svg'),
+															title: Center(
+																child: Text("SigninwithGoogle".tr, style: CustomStyle(16, Colors.black, FontWeight.w400 ),),
+															),
+														),
+													),
+												),
+											),
+											SizedBox(height: 50,),
+											Center(
+												child: Text("WhenyouusethePerpetualCalendar,youagreetoourpoliciesandterms".tr, style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,fontFamily: "Mulish",color: Colors.white,),textAlign: TextAlign.center,),
+											)
+										],
+									)
+								],
+							),
+						),
+						loginController.showSyncDialog.value == true ? Container(
+							color: Colors.black.withOpacity(0.5),
+							child: Center(
+								child: Card(
+									child: Padding(
+										padding: const EdgeInsets.all(20.0),
+										child: loginController.success.value == 0
+												? Column(
+														mainAxisSize: MainAxisSize.min,
+														children: [
+															Iconify(Emojione.white_heavy_check_mark),
+															SizedBox(height: 20),
+															Text('Đồng bộ thành công',style: titleStyle,),
+														],
+													)
+												: loginController.success.value == 1
+													? Column(
+														mainAxisSize: MainAxisSize.min,
+														children: [
+															LoadingAnimationWidget.staggeredDotsWave(color: RootColor.cam_nhat, size:40),
+															SizedBox(height: 20),
+															Text('Đang đồng bộ...'),
+														],
+													)
+													:  Column(
+															mainAxisSize: MainAxisSize.min,
+															children: [
+																Iconify(Emojione.cross_mark_button),
+																SizedBox(height: 20),
+																Text('Đồng bộ không thành công'),
+															],
+														)
+										)
+
+										// Obx(
+										// 	()=>Column(
+										// 		mainAxisSize: MainAxisSize.min,
+										// 		children: [
+										// 			CircularProgressIndicator(value: loginController.progress.value / 100),
+										// 			SizedBox(height: 20),
+										// 			Text('Đang đồng bộ: ${loginController.progress}%'),
+										// 		],
+										// 	),
+										// )
 									),
 								),
-								SizedBox(height: 50,),
-								Center(
-									child: Text("WhenyouusethePerpetualCalendar,youagreetoourpoliciesandterms".tr, style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,fontFamily: "Mulish",color: Colors.white,),textAlign: TextAlign.center,),
-								)
-							],
-						)
+						):SizedBox()
 					],
-				),
-			),
+				)
+			)
 		);
 	}
 

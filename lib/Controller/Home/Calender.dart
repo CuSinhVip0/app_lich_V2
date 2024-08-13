@@ -1,17 +1,17 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:jiffy/jiffy.dart';
-
 import '../../Enum/Data.dart';
 import '../../Styles/Colors.dart';
 import '../../utils/lunar_solar_utils.dart';
+import '../Component/UserController.dart';
 import '../TaskList.dart';
 class CalenderController extends GetxController {
 	var taskListController  = Get.put(TaskListController());
+	UserController userController = Get.find();
 	var addY = (DateTime.now().year);
 	var addM =  DateTime.now().month;
 	var addD = DateTime.now().day;
@@ -21,9 +21,7 @@ class CalenderController extends GetxController {
 	int pointLeft = -2; // diem them items
 	int pointRight = 2; // diem them item
 	DateTime pick =  DateTime.now();
-	List<GlobalKey> listOfGlobalKeys = List.generate(5, (index) {
-		return GlobalKey();
-	});
+	List<GlobalKey> listOfGlobalKeys = [];
 	var listBookmark = [].obs;
 	var pages = [];
 	var pagesprev = [];
@@ -52,6 +50,7 @@ class CalenderController extends GetxController {
 				"Thang": month,
 				"Nam": year,
 				"Key":key,
+				"IdUser":userController.userData['id']
 			}));
 		Iterable result = jsonDecode(res.body);
 		return result;
@@ -86,28 +85,29 @@ class CalenderController extends GetxController {
 							return  Padding(
 								padding: EdgeInsets.all(2),
 								child: GetBuilder<CalenderController>(
-									builder: (_)=> TextButton(
-										onPressed: () {
-											DateTime now = DateTime.now();
-											DateTime selectedDate = DateTime(date.year, date.month, index - f + 2, now.hour, now.minute, now.second);
-											setPick(selectedDate);
-											taskListController.updateSelectedDate(selectedDate);
-											taskListController.updateSelectedToDate(selectedDate);
-											taskListController.getTasks();
-										},
-										style: TextButton.styleFrom(
-											padding: EdgeInsets.zero,
-											backgroundColor:(pick.day == (index - f + 2) && pick.month == date.month && pick.year == date.year ) ? Color(0xffff745c) : Get.isDarkMode ? RootColor.button_darkmode : Colors.white,
-											shape: RoundedRectangleBorder(
-												borderRadius: BorderRadius.circular(12),
-												side: BorderSide(
-													color: isNow ? RootColor.cam_nhat : Colors.transparent,
-													width: 2,
-												)
-											),
-										),
-										child: Stack(
-											children: [
+									builder: (_)=>Stack(
+										children: [
+											TextButton(
+												onPressed: () {
+													DateTime now = DateTime.now();
+													DateTime selectedDate = DateTime(date.year, date.month, index - f + 2, now.hour, now.minute, now.second);
+													setPick(selectedDate);
+													taskListController.updateSelectedDate(selectedDate);
+													taskListController.updateSelectedToDate(selectedDate);
+													taskListController.getTasks();
+												},
+												style: TextButton.styleFrom(
+													padding: EdgeInsets.zero,
+													backgroundColor:(pick.day == (index - f + 2) && pick.month == date.month && pick.year == date.year ) ? Color(0xffff745c) : Get.isDarkMode ? RootColor.button_darkmode : Colors.white,
+													shape: RoundedRectangleBorder(
+														borderRadius: BorderRadius.circular(12),
+														side: BorderSide(
+															color: isNow ? RootColor.cam_nhat : Colors.transparent,
+															width: 2,
+														)
+													),
+												),
+												child:
 												SizedBox(
 													child: Column(
 														children: [
@@ -135,16 +135,16 @@ class CalenderController extends GetxController {
 														],
 													),
 												),
-												/*   vị trí có lịch trình thì có đấu   */
-												isSchedule
-													? Positioned(
-													top: -3,
-													right:-5,
-													child: Icon(Icons.bookmark_outlined,color: Colors.green,size: 20,)
-												):SizedBox()
-												/* end vị trí có lịch trình thì có đấu */
-											],
-										)
+
+											),	/*   vị trí có lịch trình thì có đấu   */
+											isSchedule
+												? Positioned(
+												top: -3,
+												right:-5,
+												child: Icon(Icons.bookmark_outlined,color: Colors.green,size: 20,)
+											):SizedBox()
+											/* end vị trí có lịch trình thì có đấu */
+										],
 									)
 								)
 							);
@@ -482,13 +482,14 @@ class CalenderController extends GetxController {
 	@override
 	void onInit() {
 		// getDateEventToSetBookmark(addM,addY);
+		listOfGlobalKeys = List.generate(5, (index) {
+			return GlobalKey();
+		});
 		super.onInit();
 	}
-
 	@override
  	 void onReady() {
 		controller.addListener(() {
-			// lang nghe su kien\
 			final index = (controller.offset / 387.4).round() > initIndex // offset = full width cua list pages
 			// lay ofset chia cho width cua tung widget de xac dinh vi tri cua no trong list pages
 				? (controller.offset / 387.4).round().floor() // vuot phai

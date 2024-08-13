@@ -45,9 +45,9 @@ class PostController extends GetxController{
 		}
 	}
 
-	Future<dynamic> updatePosttoDataBase (String title, List<String> urlImage,String Id_User,String Platform ) async {
+	Future<dynamic> LV_spUpdatePosttoDataBase (String title, List<String> urlImage,String Id_User,String Platform ) async {
 		try {
-			final res = await http.post(Uri.parse(ServiceApi.api + '/post/updatePosttoDataBase'),
+			final res = await http.post(Uri.parse(ServiceApi.api + '/post/LV_spUpdatePosttoDataBase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Title": title,
@@ -60,9 +60,9 @@ class PostController extends GetxController{
 			return result;
 		}
 		catch (e) {
-			print("-- Lỗi xảy ra ở UserController updatePosttoDataBase - catch --");
+			print("-- Lỗi xảy ra ở UserController LV_spUpdatePosttoDataBase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở UserController updatePosttoDataBase - catch --");
+			print("-- End Lỗi xảy ra ở UserController LV_spUpdatePosttoDataBase - catch --");
 		}
 	}
 
@@ -76,7 +76,7 @@ class PostController extends GetxController{
 					return false;
 				}
 			}
-			dynamic res = await updatePosttoDataBase(title,urlImgs,Id_User,Platform);
+			dynamic res = await LV_spUpdatePosttoDataBase(title,urlImgs,Id_User,Platform);
 			if(res['status']=="error"){
 				return false;
 			}

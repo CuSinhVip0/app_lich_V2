@@ -21,7 +21,7 @@ class DetailPostController extends GetxController{
 
 	Future<bool> updateCommenttoDataBase (String content, int Id_Post,String Id_User ) async {
 		try {
-			final res = await http.post(Uri.parse(ServiceApi.api + '/post/updateCommenttoDataBase'),
+			final res = await http.post(Uri.parse(ServiceApi.api + '/post/LV_insertCommenttoDataBase'),
 				headers: {"Content-Type": "application/json"},
 				body: jsonEncode({
 					"Content": content,
@@ -51,9 +51,9 @@ class DetailPostController extends GetxController{
 			return false;
 		}
 		catch (e) {
-			print("-- Lỗi xảy ra ở UserController updateCommenttoDataBase - catch --");
+			print("-- Lỗi xảy ra ở UserController LV_insertCommenttoDataBase - catch --");
 			print(e);
-			print("-- End Lỗi xảy ra ở UserController updateCommenttoDataBase - catch --");
+			print("-- End Lỗi xảy ra ở UserController LV_insertCommenttoDataBase - catch --");
 			return false;
 		}
 	}

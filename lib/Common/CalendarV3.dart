@@ -1,17 +1,10 @@
-import 'dart:convert';
 import 'dart:core';
-import 'dart:ffi';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:luanvan/Styles/Colors.dart';
 
 import '../Controller/Home/Calender.dart';
-import '../Enum/Data.dart';
-import '../utils/lunar_solar_utils.dart';
 
 class CalendarV3 extends StatelessWidget {
     Function onTap;
@@ -20,7 +13,7 @@ class CalendarV3 extends StatelessWidget {
         required this.onTap,
         required this.selectedD
 });
-    var calenderController = Get.put(CalenderController());
+    CalenderController calenderController = Get.find();
     @override
     Widget build(BuildContext context) {
         context.isDarkMode;
@@ -43,7 +36,7 @@ class CalendarV3 extends StatelessWidget {
                         ),
                     ),
                     SizedBox(
-                        height: 320,
+                        height: 340,
                         child: ScrollConfiguration(
                             behavior: ScrollConfiguration.of(context).copyWith(
                                 dragDevices: {

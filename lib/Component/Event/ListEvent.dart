@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:luanvan/pages/Event/EventDetailV2.dart';
 import 'package:luanvan/Styles/Colors.dart';
 import 'package:luanvan/Styles/Themes.dart';
+import '../../Controller/Task.dart';
 import '../../Enum/Data.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -14,31 +16,34 @@ import '../../utils/date_utils.dart';
 enum ITEM_TYPE { main, sub, hidden }
 
 class ListEvent extends StatefulWidget {
-	 ItemScrollController itemScrollController;
-	 List<dynamic> mainItems;
-	 List<GlobalKey> mainKeys;
-	 List<dynamic> subItems;
-	 bool show;
-	 ItemPositionsListener? itemPositionsListener;
-	 int yearPrev;
-	 int yearNext;
-	 Function subYear;
-	 Function addYear;
-	 ListEvent({required this.itemScrollController,
-		 required this.mainKeys,
-		 required this.mainItems,
-		 required this.show,
-		 required this.subItems,
-		 required this.itemPositionsListener,
-		 required this.yearPrev,
-		 required this.yearNext,
-		 required this.subYear,
-		 required this.addYear});
-	 @override
-	 State<ListEvent> createState() => _ListEventState();
+	ItemScrollController itemScrollController;
+	List<dynamic> mainItems;
+	List<GlobalKey> mainKeys;
+	List<dynamic> subItems;
+	bool show;
+	ItemPositionsListener? itemPositionsListener;
+	int yearPrev2;
+	int yearNext2;
+	Function subYear;
+	Function addYear;
+	ListEvent({required this.itemScrollController,
+		required this.mainKeys,
+		required this.mainItems,
+		required this.show,
+		required this.subItems,
+		required this.itemPositionsListener,
+		required this.yearPrev2,
+		required this.yearNext2,
+		required this.subYear,
+		required this.addYear});
+	@override
+	State<ListEvent> createState() => _ListEventState();
 }
 
 class _ListEventState extends State<ListEvent> {
+	int yearPrev =DateTime.now().year;
+	int yearNext =DateTime.now().year;
+	var taskController = Get.put(TaskController());
 	List<dynamic> hiddenItems = [];
 	List<GlobalKey> hiddenKeys = [];
 	ItemScrollController? itemScrollController ;
@@ -76,12 +81,7 @@ class _ListEventState extends State<ListEvent> {
 								),
 							),
 							if (isLoadingMore)
-								Container(
-									width: 30,
-									height: 30,
-									padding: const EdgeInsets.all(4),
-									child: const CircularProgressIndicator(strokeWidth: 2),
-								)
+								LinearProgressIndicator(minHeight: 2),
 						],
 					),
 				],
@@ -173,7 +173,6 @@ class _ListEventState extends State<ListEvent> {
 								type: ITEM_TYPE.hidden,
 							),
 						)
-
 							.toList(),
 					),
 				),
@@ -204,9 +203,9 @@ class _ListEventState extends State<ListEvent> {
 
 		return  TextButton(
 			onPressed: text['thumnail'] == true ?null: (){
-				Navigator.of(context).pushNamed('/eventDetailPage' ,arguments: {
-					'item': widget.mainItems[index],
-				});
+				taskController.setTask(text);
+				print(taskController.task.toString());
+				Get.to(()=>EventDetailPageV2(DateTime((text['NamDuong']),(text['ThangDuong']),(text['NgayDuong']))));
 			},
 			style: TextButton.styleFrom(
 				shape: BeveledRectangleBorder(),
@@ -221,11 +220,19 @@ class _ListEventState extends State<ListEvent> {
 				alignment: Alignment.centerLeft,
 				width: double.infinity,
 				child: text['thumnail'] == true
-					? Align(
-					alignment: Alignment.center,
-					child: Text(getNameMonthOfYear(text['ThangDuong']as int)),
-				)
-
+					? Container(
+						height: 100,
+						width: double.infinity,
+							decoration: BoxDecoration(
+								image: DecorationImage(
+									image: AssetImage("assets/Thang${text['ThangDuong']as int}.jpg"),
+									fit: BoxFit.cover,
+								),
+							),
+					child: Center(
+						child: Text(getNameMonthOfYear(text['ThangDuong']as int),style: CustomStyle(20,Colors.white, FontWeight.w800),),
+					),
+						)
 					:Row(
 					children: [
 						Expanded(flex:1,child: Column(
@@ -256,21 +263,25 @@ class _ListEventState extends State<ListEvent> {
 		setState(() {
 			isLoadingMore = true;
 		});
-		final res = await http.post(Uri.parse(ServiceApi.api+'/event/getEvents'),
+		final res = await http.post(Uri.parse(ServiceApi.api+'/event/LV_getEvents'),
 			headers: {"Content-Type": "application/json"},
 			body: jsonEncode({
-				"nam":widget.yearNext
+				"nam":widget.yearNext2 + 1
 			}));
 		dynamic result = jsonDecode(res.body);
+		setState(() {
+			yearNext  = yearNext + 1;
+		});
+		widget.addYear();
 		Future.delayed(const Duration(seconds: 3)).then((value) {
 			for (var i = 0; i < result['data'].length; i++) {
 				widget.mainItems.add(result['data'][i]);
 				widget.mainKeys.add(GlobalKey());
 			}
-
 			setState(() {});
 			isLoadingMore = false;
 			widget.subItems = List<dynamic>.from(widget.mainItems);
+
 		});
 	}
 
@@ -284,12 +295,16 @@ class _ListEventState extends State<ListEvent> {
 		});
 		hiddenItems = [];
 		hiddenKeys = [];
-		final res = await http.post(Uri.parse(ServiceApi.api+'/event/getEvents'),
+		final res = await http.post(Uri.parse(ServiceApi.api+'/event/LV_getEvents'),
 			headers: {"Content-Type": "application/json"},
 			body: jsonEncode({
-				"nam":widget.yearPrev
+				"nam":widget.yearPrev2 - 1
 			}));
 		dynamic result = jsonDecode(res.body);
+		setState(() {
+			yearPrev  = yearPrev - 1;
+		});
+		widget.subYear();
 		double estimatedAdjustment = 0.0;
 		estimatedAdjustment = result['data'].length * 84.0;
 		Future.delayed(const Duration(seconds: 3)).then((value) {
@@ -317,7 +332,7 @@ class _ListEventState extends State<ListEvent> {
 							isLoadingPrev = false;
 							widget.subItems = List<dynamic>.from(widget.mainItems);
 						});
-						widget.subYear();
+
 					});
 				});
 			});

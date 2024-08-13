@@ -1,19 +1,18 @@
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:luanvan/Common/NonScrollableRefreshIndicatorV2.dart';
 import 'package:luanvan/Component/AppBar/OptionsMenu.dart';
 import 'package:luanvan/Controller/StatusController.dart';
 import 'package:luanvan/Controller/Component/UserController.dart';
-import 'package:luanvan/Styles/Colors.dart';
 import 'package:luanvan/pages/CreatePostPage.dart';
+import 'package:luanvan/pages/LoginPage.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../Common/NonScrollableRefreshIndicator.dart';
+import '../Component/NoInternet.dart';
 import '../Component/PostV1.dart';
+import '../Controller/Component/SystemController.dart';
 import '../Styles/Themes.dart';
 
 class StatusPage extends StatelessWidget{
@@ -21,7 +20,7 @@ class StatusPage extends StatelessWidget{
 	UserController userController = Get.find();
 	TextEditingController username = TextEditingController();
 	TextEditingController password = TextEditingController();
-
+	SystemController systemController = Get.find();
 	@override
 	Widget build(BuildContext context) {
 		context.isDarkMode;
@@ -42,52 +41,61 @@ class StatusPage extends StatelessWidget{
 						statusController.i.value = 0;
 						statusController.getPostFromDataBase(0,5);
 					},
-					child: Container(
-						padding: EdgeInsets.all(12),
-						child: Column(
-							children: [
-								/*----- ||   Button tạo bài   || -----*/
-								Card(
-									surfaceTintColor: Colors.white,
-									elevation: 2,
-									shadowColor: Colors.transparent,
-									child: GestureDetector(
-										onTap: () {
-											Get.to(() => CreatePostPage());
-										},
-										child: ListTile(
-											leading: FaIcon(FontAwesomeIcons.penToSquare),
-											title: Text("startadiscussion".tr, style: titleStyle,),
-										),
-									)
-								),
-								/*----- || End button tạo bài || -----*/
+					child:GetBuilder(
+						init: SystemController(),
+						builder: (SystemController)=>(systemController.connectionStatus.contains(ConnectivityResult.mobile)  || systemController.connectionStatus.contains( ConnectivityResult.wifi) )
+							?
+						Container(
+							padding: EdgeInsets.all(12),
+							child: Column(
+								children: [
+									/*----- ||   Button tạo bài   || -----*/
+									Card(
+										surfaceTintColor: Colors.white,
+										elevation: 2,
+										shadowColor: Colors.transparent,
+										child: GestureDetector(
+											onTap: () {
+												userController.isLogin.value
+												?Get.to(() => CreatePostPage())
+													:Get.to(() =>LoginPage());
+											},
+											child: ListTile(
+												leading: FaIcon(FontAwesomeIcons.penToSquare),
+												title: Text("startadiscussion".tr, style: titleStyle,),
+											),
+										)
+									),
+									/*----- || End button tạo bài || -----*/
 
-								GetBuilder(
-									init: StatusController(),
-									builder: (statusController)=> Skeletonizer(
-										enabled: !statusController.listPost.isNotEmpty,
-										child:statusController.listPost.isNotEmpty ? Column(
-											children: statusController.listPost.map((i)=>
-
-												PostV1(i,(){
-													statusController.updatelistPort('like',i['Id']);
-													statusController.updateLikeOfPosttoDataBase(i['Id'],userController.userData['id']);
-												})
-											).toList(),
-										):SizedBox()
-									)
-								),
-								Obx (()=> statusController.finished.value == true
+									GetBuilder(
+										init: StatusController(),
+										builder: (statusController)=> Skeletonizer(
+											enabled: !statusController.listPost.isNotEmpty,
+											child:statusController.listPost.isNotEmpty ? Column(
+												children: statusController.listPost.map((i)=>
+													PostV1(i,(){
+														statusController.updatelistPort('like',i['Id']);
+														statusController.updateLikeOfPosttoDataBase(i['Id'],userController.userData['id']);
+													})
+												).toList(),
+											):SizedBox()
+										)
+									),
+									Obx (()=> statusController.finished.value == true
 										? Center(
 										child:  Text("Không còn bài viết",style: titleStyle,),
 									)
 										: SizedBox()
-								)
-							],
-						)
-					)
-				)
-			));
-	}
+									)
+								],
+							)
+						):
+						Center(
+							child: NoInternet((){
+
+							}),
+						),)
+				),));
+		}
 }

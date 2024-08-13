@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:luanvan/Styles/Colors.dart';
 
+import '../Controller/Component/UserController.dart';
 import '../Controller/Home/Calender.dart';
 import '../Enum/Data.dart';
 import '../utils/lunar_solar_utils.dart';
@@ -27,6 +28,7 @@ class CalendarV2 extends StatefulWidget {
 
 class _CalendarV2State extends State<CalendarV2> {
     var calenderController = Get.put(CalenderController());
+    UserController userController = Get.find();
     int? addY;
     int? addM;
     int? addD;
@@ -49,6 +51,7 @@ class _CalendarV2State extends State<CalendarV2> {
                 "Thang": month,
                 "Nam": year,
                 "Key":key,
+                "IdUser":userController.userData['id']
             }));
         Iterable result = jsonDecode(res.body);
         return result;

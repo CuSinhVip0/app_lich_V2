@@ -9,12 +9,15 @@ import 'package:luanvan/Styles/Themes.dart';
 import 'package:luanvan/pages/DetailPostPage.dart';
 import 'package:luanvan/utils/formatTimeToString.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import '../Controller/Component/UserController.dart';
+import '../pages/LoginPage.dart';
 class PostV1 extends StatelessWidget{
 	StatusController statusController = Get.find();
 	var payload;
 	Function handleLike;
 	PostV1(this.payload,this.handleLike);
-
+	UserController userController = Get.find();
 	@override
 	Widget build(BuildContext context) {
 		context.isDarkMode;
@@ -22,7 +25,10 @@ class PostV1 extends StatelessWidget{
 			init: StatusController(),
 			builder: (statusController)=>GestureDetector(
 				onTap: (){
-					Get.to(()=>DetailPostPage(payload));
+					userController.isLogin.value
+					?Get.to(()=>DetailPostPage(payload))
+						:Get.to(() =>LoginPage());
+
 				},
 				child:  Card(
 					margin: EdgeInsets.symmetric(vertical: 8),
@@ -93,7 +99,10 @@ class PostV1 extends StatelessWidget{
 														init: StatusController(),
 														builder: (statusController) => GestureDetector(
 															onTap:(){
-																handleLike();
+																userController.isLogin.value
+																	?handleLike()
+																	:Get.to(() =>LoginPage());
+
 															},
 															child: Icon(payload['IsLike']==0?FontAwesomeIcons.heart:FontAwesomeIcons.solidHeart,color: RootColor.cam_nhat,size: 24,),
 														),),

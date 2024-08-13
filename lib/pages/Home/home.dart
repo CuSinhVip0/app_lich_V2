@@ -19,6 +19,7 @@ import '../../Component/CalendarPoster.dart';
 import '../../Component/NoInternet.dart';
 import '../../utils/lunar_solar_utils.dart';
 import 'package:colorful_iconify_flutter/icons/noto.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class HomePage extends StatefulWidget {
 	HomePage();
@@ -42,9 +43,12 @@ class _HomePageState extends State<HomePage> {
 			hide =false;
 		});
 	}
-
+	void begin ()async {
+		await Future.delayed(const Duration(seconds: 3));
+		FlutterNativeSplash.remove();
+	}
 	@override
-	void initState() {
+	void initState()  {
 		_timer = Timer.periodic(
 			const Duration(seconds: 1),
 				(Timer timer) => setState(() {
@@ -52,6 +56,7 @@ class _HomePageState extends State<HomePage> {
 				homeController.updateSelectedDate(DateTime(homeController.selectedDate.year, homeController.selectedDate.month,
 					homeController.selectedDate.day, now.hour, now.minute, now.second));
 			}));
+		begin();
 	}
 
 	@override
@@ -65,146 +70,145 @@ class _HomePageState extends State<HomePage> {
 		context.isDarkMode;
     	return Scaffold(
 			backgroundColor: Colors.transparent,
-			body: SafeArea(
-				child: Container(
-					decoration: BoxDecoration(
-						image: DecorationImage(
-							image: AssetImage("assets/${ getChiDay(jdn(homeController.selectedDate.day,homeController.selectedDate.month,homeController.selectedDate.year))}.png"),
-							fit: BoxFit.cover,
-						),
-					),
-					child: Stack(
-						clipBehavior: Clip.none,
-						children: [
-//header
-							Positioned(
-								top: 0,
-								left: 0,
-								right: 0,
-								child: Padding(
-									padding: EdgeInsets.all(12),
-									child: SizedBox(
-										width: MediaQuery
-											.of(context)
-											.size
-											.width,
-										height: 50,
-										child: Card(
-											surfaceTintColor: Colors.white,
-											elevation:6,
-											child: Padding(
-												padding: EdgeInsets.symmetric(horizontal: 12),
-												child: Row(
-													mainAxisAlignment: MainAxisAlignment.spaceBetween,
-													children: [
-														TextButton.icon(
-															style: TextButton.styleFrom(
-																padding: EdgeInsets.zero,
-																foregroundColor: Colors.white,
-																iconColor:Get.isDarkMode? Colors.white: Colors.black,
-															),
-															onPressed: () {
-																setState(() {
-																	hide = !hide;
-																});
-															},
-															icon: Iconify(Noto.spiral_calendar),
-															label: Text("Perpetualcalendar".tr, style: titleStyle,),
-														),
-														GetBuilder(
-															init: HomeController(),
-															builder: (homeController)=>TextButton(onPressed: () {
-																DateTime now = DateTime.now();
-																homeController.updateSelectedDate(DateTime(now.year, now.month,now.day, now.hour, now.minute, now.second));
-																homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
-															},
-																style: TextButton.styleFrom(
-																	backgroundColor: Color(0xffff745c),
-																	foregroundColor: Colors.transparent,
-																	minimumSize: Size(80, 30),
-																	padding: EdgeInsets.zero
-																),
-																child: Text("Today".tr, style:CustomStyle(14, Colors.white, FontWeight.w400) )))
-													],
-												),
-											),
-										)
-									),
-								),
-							),
-//main
-							Positioned(
-								top: 75,
-								left: 0,
-								right: 0,
-								bottom: 0,
-								child: Padding(
-									padding: EdgeInsets.symmetric(horizontal: 12),
-									child: NonScrollableRefreshIndicator(
-										onRefresh: () async{
-											homeController.getData();
-										},
-										child:Column(
-											mainAxisSize: MainAxisSize.max,
-											children: [
-												GetBuilder(
-													init: HomeController(),
-													builder: (homeController)=>GestureDetector(
-														onHorizontalDragEnd: (DragEndDetails details) {
-															if (details.primaryVelocity! > 0) {
-																homeController.updateSelectedDate(homeController.selectedDate.subtract(Duration(days: 1)));
-																homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
-															}
-															else if (details.primaryVelocity! < 0) {
-																homeController.updateSelectedDate(homeController.selectedDate.add(Duration(days: 1)));
-																homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
-															}
-															homeController.getData();
-														},
-														child: CalendarPoster(homeController.selectedDate, homeController.lunarDate)
-													)),
-												// xu ly phần kết nối mạng
-												GetBuilder(
-													init: SystemController(),
-													builder: (SystemController)=>(systemController.connectionStatus.contains(ConnectivityResult.mobile)  || systemController.connectionStatus.contains( ConnectivityResult.wifi) )
-														?DataAPI():NoInternet(),
-												)
-											],
-										),
-									)
-								),),
-//calendar trên thanh header
-							Positioned(
-								top: 62,
-								left: 0,
-								right: 0,
-								bottom: 0,
-								child:GetBuilder(
-									init: HomeController(),
-									builder: (homeController)=> Visibility(
-										visible: hide,
-										maintainAnimation: true,
-										maintainState: true,
-										child: AnimatedOpacity(
-											duration: const Duration(milliseconds: 100),
-											curve: Curves.linear,
-											opacity: hide ? 1 : 0,
-											child:Column(
-												children: [
-													Calendar(handle,homeController.selectedDate),
-													Expanded(flex: 6, child: GestureDetector(
-														onTap: () {
-															handleShow();
-														},
-													))
-												])
-										),
-									))
-							)
-						],
+			body:  Container(
+				decoration: BoxDecoration(
+					image: DecorationImage(
+						image: AssetImage("assets/${ getChiDay(jdn(homeController.selectedDate.day,homeController.selectedDate.month,homeController.selectedDate.year))}.png"),
+						fit: BoxFit.cover,
 					),
 				),
-			)
+				child: Stack(
+					clipBehavior: Clip.none,
+					children: [
+//header
+						Positioned(
+							top: 16,
+							left: 0,
+							right: 0,
+							child: Padding(
+								padding: EdgeInsets.symmetric(horizontal: 4,vertical: 12),
+								child: SizedBox(
+									width: MediaQuery
+										.of(context)
+										.size
+										.width,
+									height: 50,
+									child: Card(
+										surfaceTintColor: Colors.white,
+										elevation:6,
+										child: Padding(
+											padding: EdgeInsets.symmetric(horizontal: 12),
+											child: Row(
+												mainAxisAlignment: MainAxisAlignment.spaceBetween,
+												children: [
+													TextButton.icon(
+														style: TextButton.styleFrom(
+															padding: EdgeInsets.zero,
+															foregroundColor: Colors.white,
+															iconColor:Get.isDarkMode? Colors.white: Colors.black,
+														),
+														onPressed: () {
+															setState(() {
+																hide = !hide;
+															});
+														},
+														icon: Iconify(Noto.spiral_calendar),
+														label: Text("Perpetualcalendar".tr, style: titleStyle,),
+													),
+													GetBuilder(
+														init: HomeController(),
+														builder: (homeController)=>TextButton(onPressed: () {
+															DateTime now = DateTime.now();
+															homeController.updateSelectedDate(DateTime(now.year, now.month,now.day, now.hour, now.minute, now.second));
+															homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
+															homeController.getData();
+														},
+															style: TextButton.styleFrom(
+																backgroundColor: Color(0xffff745c),
+																foregroundColor: Colors.transparent,
+																minimumSize: Size(80, 30),
+																padding: EdgeInsets.zero
+															),
+															child: Text("Today".tr, style:CustomStyle(14, Colors.white, FontWeight.w400) )))
+												],
+											),
+										),
+									)
+								),
+							),
+						),
+//main
+						Positioned(
+							top: 75,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							child: Padding(
+								padding: EdgeInsets.symmetric(horizontal: 4),
+								child: NonScrollableRefreshIndicator(
+									onRefresh: () async{
+										homeController.getData();
+									},
+									child:Column(
+										mainAxisSize: MainAxisSize.max,
+										children: [
+											GetBuilder(
+												init: HomeController(),
+												builder: (homeController)=>GestureDetector(
+													onHorizontalDragEnd: (DragEndDetails details) {
+														if (details.primaryVelocity! > 0) {
+															homeController.updateSelectedDate(homeController.selectedDate.subtract(Duration(days: 1)));
+															homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
+														}
+														else if (details.primaryVelocity! < 0) {
+															homeController.updateSelectedDate(homeController.selectedDate.add(Duration(days: 1)));
+															homeController.lunarDate = convertSolar2Lunar(homeController.selectedDate.day, homeController.selectedDate.month, homeController.selectedDate.year, 7.0);
+														}
+														homeController.getData();
+													},
+													child: CalendarPoster(homeController.selectedDate, homeController.lunarDate)
+												)),
+											// xu ly phần kết nối mạng
+											GetBuilder(
+												init: SystemController(),
+												builder: (SystemController)=>(systemController.connectionStatus.contains(ConnectivityResult.mobile)  || systemController.connectionStatus.contains( ConnectivityResult.wifi) )
+													?DataAPI():NoInternet((){}),
+											)
+										],
+									),
+								)
+							),),
+//calendar trên thanh header
+						Positioned(
+							top: 62,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							child:GetBuilder(
+								init: HomeController(),
+								builder: (homeController)=> Visibility(
+									visible: hide,
+									maintainAnimation: true,
+									maintainState: true,
+									child: AnimatedOpacity(
+										duration: const Duration(milliseconds: 100),
+										curve: Curves.linear,
+										opacity: hide ? 1 : 0,
+										child:Column(
+											children: [
+												Calendar(handle,homeController.selectedDate),
+												Expanded(flex: 6, child: GestureDetector(
+													onTap: () {
+														handleShow();
+													},
+												))
+											])
+									),
+								))
+						)
+					],
+				),
+			),
 		);
   	}
 

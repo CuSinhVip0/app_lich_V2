@@ -1,14 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:luanvan/Common/Button/CustomButton.dart';
 import 'package:luanvan/Controller/Component/UserController.dart';
+import 'package:luanvan/Controller/Home/Calender.dart';
+import 'package:luanvan/Controller/TaskList.dart';
 import 'package:luanvan/pages/InformationDetailPage.dart';
-import 'package:luanvan/pages/Setting.dart';
+import 'package:luanvan/pages/System/Setting.dart';
 
 import '../../Styles/Colors.dart';
 import '../../Styles/Themes.dart';
@@ -16,6 +15,8 @@ import '../../pages/LoginPage.dart';
 
 class OptionsMenu extends StatelessWidget{
 	UserController userController = Get.find();
+	CalenderController calenderController = Get.find();
+	TaskListController taskListController = Get.find();
 	@override
   	Widget build(BuildContext context) {
 		context.isDarkMode;
@@ -127,7 +128,11 @@ class OptionsMenu extends StatelessWidget{
 												: userController.typeLogin == "GG"
 												? await userController.logoutGoogle()
 												: false;
-											res ? Get.snackbar("Đăng xuất thành công", 'Hẹn gặp lại') : Get.snackbar("Đăng xuất không thành công", 'Vui lòng thử lại') ;
+											if(res)  {
+												Get.snackbar("Đăng xuất thành công", 'Hẹn gặp lại');
+												calenderController.getDateEventToSetBookmark(taskListController.selectedDate.month,taskListController.selectedDate.year);
+												taskListController.getTasks();
+											} else Get.snackbar("Đăng xuất không thành công", 'Vui lòng thử lại') ;
 										},
 									): SizedBox()
 								],

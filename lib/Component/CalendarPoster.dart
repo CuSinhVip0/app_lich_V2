@@ -103,7 +103,7 @@ class CalendarPoster extends StatelessWidget {
 									),
 								)),
 								Positioned(
-									top: -50,
+									top: -70,
 									child: Container(
 										decoration: BoxDecoration(
 											color: Color(0xffff745c),
